@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "uppeople/*": ["uppeople_f/src/*"],
+      "@uppeople/*": ["uppeople_f/src/*"]
+    }
+  }
+}

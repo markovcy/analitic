@@ -1,0 +1,47 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "airbnb",
+    "plugin:@typescript-eslint/recommended",
+    "react-app",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "jsx-quotes": [
+      1,
+      "prefer-double"
+    ],
+    "react/prop-types": 0,
+    "react/jsx-filename-extension": [1, {
+      "extensions": [".tsx"]
+    }],
+    "import/extensions": "off",
+    "no-debugger": "warn",
+    "no-shadow": "off",
+    "ban-ts-ignore": "off",
+    "no-param-reassign": "off",
+    "import/no-unresolved": "off",
+    "react/state-in-constructor": "off",
+    "react/require-default-props": "off",
+    "no-use-before-define": "off",
+    "interface-name" : [0, "never"],
+    "no-non-null-assertion": "off",
+    "import/prefer-default-export": "off",
+    "react/jsx-props-no-spreading": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "import/no-anonymous-default-export": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": ["error", { "ignoreRestArgs": false }],
+    "prettier/prettier": ["error", { "endOfLine": "auto" }]
+  },
+  "plugins": [
+    "prettier",
+    "@typescript-eslint"
+  ]
+}

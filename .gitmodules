@@ -1,0 +1,3 @@
+[submodule "uppeople_f"]
+	path = uppeople_f
+	url = git@github.com:ruslanBik4/uppeople_f.git
