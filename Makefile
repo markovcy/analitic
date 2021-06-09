@@ -14,9 +14,7 @@ build:
 	@rm -f latestBuild.zip
 	@echo 'Prior build removed!' 
 	@echo 'Preparing new extension build..' 
-	@export INLINE_RUNTIME_CHUNK=false; \
-	export GENERATE_SOURCEMAP=false; \
-	yarn build
+	@export	yarn build
 	@mkdir -p dist
 	@cp -r build/* dist
 	@echo 'Renaming files...' 

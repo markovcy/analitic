@@ -1,4 +1,9 @@
-export { default as ExtensionWrapper } from './ExtensionWrapper';
-export { default as Widget } from './Widget';
-export { default as AuthForm } from './AuthForm';
-export { default as Popup } from './Popup';
+export * from './Themr';
+
+export * from './Popup';
+export * from './Widget';
+export * from './AuthForm';
+export * from './NotFound';
+export * from './Button';
+export * from './CandidateForm';
+export * from './ExtensionWrapper';

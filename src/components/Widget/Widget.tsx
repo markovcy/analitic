@@ -1,25 +1,32 @@
 import React from 'react';
+import cx from 'classnames';
 import LogoBlack from '../../images/logo_black.png';
 import LogoWhite from '../../images/logo_white.png';
-import Styles from './Widget.module.scss';
+import styles from './Widget.module.scss';
 
 interface WidgetProps {
-  isCandidateExist: boolean;
+  isExpanded: boolean;
+  isCandidateExist?: boolean;
+  onWidgetClick: () => void;
 }
 
-const Widget = (props: WidgetProps) => {
-  const { isCandidateExist } = props;
+export const Widget = (props: WidgetProps) => {
+  const { isCandidateExist, onWidgetClick, isExpanded } = props;
 
-  const onButtonClick = () => {
-    console.log('hello hello from button');
-  };
   return (
-    <div className={Styles.widget}>
-      <button onClick={onButtonClick} type="button">
-        <img src={isCandidateExist ? LogoBlack : LogoWhite} alt="logo" />
+    <div
+      className={cx(styles.wrapper, {
+        [styles.expanded]: isExpanded,
+      })}
+    >
+      <button type="button" className={styles.widget} onClick={onWidgetClick}>
+        <div className={styles.icon}>
+          <img src={isCandidateExist ? LogoWhite : LogoBlack} alt="logo" />
+        </div>
+        <p className={styles.text}>
+          {isCandidateExist ? 'Candidate exists' : 'Is not in CRM'}
+        </p>
       </button>
     </div>
   );
 };
-
-export default Widget;

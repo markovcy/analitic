@@ -1,0 +1,96 @@
+// theme
+$white: #fff;
+$black: #000;
+$theme: #000;
+
+// navy blue
+$gainsBoro: rgb(101, 113, 135); // #657187
+$airForce: rgb(79, 91, 117); // #4f5b75
+$steel: rgb(61, 75, 102); // #3d4b66
+$space: rgb(35, 51, 81); // #233351
+$navy: rgb(10, 28, 59); // #0a1c3b
+
+// blue
+$lightBlue: rgb(243, 249, 255); // #f3f9ff
+$skyBlue: rgb(197, 226, 255); // #c5e2ff
+$deepSkyBlue: rgb(79, 163, 255); // #4fa3ff
+$dodgeBlue: rgb(12, 91, 255); // #0c5bff
+$darkBlue: rgb(9, 59, 154); // #093b9a
+
+// light blue
+$babyBlue: rgb(247, 250, 255); // #f7faff
+$powderBlue: rgb(216, 235, 255); // #d8ebff
+$royalBlue: rgb(120, 187, 255); // #78bbff
+$blue: rgb(1, 120, 254); // #0178fe
+$midNightBlue: rgb(0, 55, 132); // #003784
+
+// red
+$lightRed: rgb(255, 247, 247); // #fff7f7
+$coral: rgb(255, 186, 186); // #ffbaba
+$indianRed: rgb(255, 82, 82); // #ff5252
+$crimson: rgb(217, 34, 35); // #d92223
+$darkRed: rgb(155, 0, 0); // #9b0000
+
+// green
+$lightGreen: rgb(230, 252, 246); // #e6fcf6
+$paleGreen: rgb(135, 233, 200); // #87e9c8
+$springGreen: rgb(54, 205, 153); // #36cd99
+$seaGreen: rgb(12, 167, 111); // #0ca76f
+$darkGreen: rgb(0, 87, 58); // #00573a
+
+// orange
+$lightOrange: rgb(255, 252, 243); // #fffcf3
+$khaki: rgb(255, 234, 192); // #ffeac0
+$gold: rgb(255, 195, 90); // #ffc35a
+$orange: rgb(255, 163, 12); // #ffa30c
+$darkOrange: rgb(238, 104, 0); // #ee6800
+
+// gray
+$lightGray: rgb(246, 247, 248); // #f6f7f8
+$clouds: rgb(239, 240, 243); // #eff0f3
+$concrete: rgb(194, 199, 209); // #c2c7d1
+$asbestos: rgb(157, 164, 178); // #9da4b2
+$darkGray: rgb(126, 137, 156); // #7e899c
+
+/* stylelint-disable property-case */
+:export {
+  gainsBoro: $gainsBoro;
+  airForce: $airForce;
+  steel: $steel;
+  space: $space;
+  navy: $navy;
+  lightBlue: $lightBlue;
+  skyBlue: $skyBlue;
+  deepSkyBlue: $deepSkyBlue;
+  dodgeBlue: $dodgeBlue;
+  darkBlue: $darkBlue;
+  babyBlue: $babyBlue;
+  powderBlue: $powderBlue;
+  royalBlue: $royalBlue;
+  blue: $blue;
+  midNightBlue: $midNightBlue;
+  lightRed: $lightRed;
+  coral: $coral;
+  indianRed: $indianRed;
+  crimson: $crimson;
+  darkRed: $darkRed;
+  lightGreen: $lightGreen;
+  paleGreen: $paleGreen;
+  springGreen: $springGreen;
+  seaGreen: $seaGreen;
+  darkGreen: $darkGreen;
+  lightOrange: $lightOrange;
+  khaki: $khaki;
+  gold: $gold;
+  orange: $orange;
+  darkOrange: $darkOrange;
+  lightGray: $lightGray;
+  clouds: $clouds;
+  concrete: $concrete;
+  asbestos: $asbestos;
+  darkGray: $darkGray;
+  theme: $theme;
+  white: $white;
+  black: $black;
+}
+/* stylelint-enable property-case */

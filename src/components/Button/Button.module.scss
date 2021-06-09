@@ -1,0 +1,204 @@
+@import '@upp/chrome/styles/media';
+@import '@upp/chrome/styles/colors';
+@import '@upp/chrome/styles/animate';
+
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 8px 12px;
+  color: $navy;
+  font-size: 14px;
+  border-width: 1px;
+  border-radius: 8px;
+  border-style: solid;
+
+  @include transition();
+
+  .icon {
+    flex: none;
+    margin-left: 12px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    border-color: $asbestos;
+
+    .icon {
+      path {
+        fill: $asbestos;
+      }
+    }
+  }
+
+  @media #{$phone} {
+    width: 100%;
+  }
+
+  &.secondary {
+    background: none;
+  }
+}
+
+.input {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  opacity: 0;
+  cursor: pointer;
+}
+
+.title {
+  line-height: 1;
+  text-overflow: ellipsis;
+  overflow: hidden !important;
+  white-space: nowrap;
+}
+
+.default {
+  border-color: $clouds;
+  background: $lightGray;
+
+  &:hover {
+    background: $clouds;
+  }
+
+  &:disabled {
+    background: $concrete;
+  }
+
+  &.secondary {
+    &:hover {
+      background: $lightGray;
+    }
+
+    &:disabled {
+      background: $clouds;
+    }
+  }
+}
+
+.primary {
+  color: #fff;
+  border-color: $darkBlue;
+  background: $darkBlue;
+
+  &:hover {
+    background: $navy;
+  }
+
+  &:disabled {
+    background: $gainsBoro;
+  }
+
+  &.secondary {
+    color: $darkBlue;
+
+    .icon {
+      path {
+        fill: $midNightBlue;
+      }
+    }
+
+    &:hover {
+      background: $lightBlue;
+    }
+
+    &:disabled {
+      background: $powderBlue;
+    }
+  }
+}
+
+.success {
+  color: #fff;
+  border-color: $seaGreen;
+  background: $seaGreen;
+
+  --box-shadow-color: #{$seaGreen};
+
+  &:hover {
+    background: $darkGreen;
+  }
+
+  &:disabled {
+    background: $darkGreen;
+  }
+
+  &.secondary {
+    color: $seaGreen;
+
+    &:hover {
+      background: $lightGreen;
+    }
+
+    &:disabled {
+      background: $paleGreen;
+    }
+  }
+}
+
+.warning {
+  border-color: $orange;
+  background: $orange;
+
+  --box-shadow-color: #{$orange};
+
+  &:hover {
+    color: #fff;
+    background: $darkOrange;
+  }
+
+  &:disabled {
+    color: #fff;
+    background: $darkOrange;
+  }
+
+  &.secondary {
+    color: $darkOrange;
+
+    &:hover {
+      background: $lightOrange;
+    }
+
+    &:disabled {
+      background: $khaki;
+    }
+  }
+}
+
+.danger {
+  color: #fff;
+  border-color: $crimson;
+  background: $crimson;
+
+  --box-shadow-color: #{$crimson};
+
+  &:hover {
+    background: $darkRed;
+  }
+
+  &:disabled {
+    background: $darkRed;
+  }
+
+  &.secondary {
+    color: $crimson;
+
+    &:hover {
+      background: $lightRed;
+    }
+
+    &:disabled {
+      background: $coral;
+    }
+  }
+}

@@ -1,0 +1,190 @@
+@import '~reset-css';
+@import './colors';
+@import './animate';
+@import './media';
+
+* > :focus {
+  --box-shadow-color: #{$deepSkyBlue};
+
+  outline: none;
+  box-shadow: 0 0 1px 2px var(--box-shadow-color);
+
+  @include transition(box-shadow);
+}
+
+body {
+  min-width: 100vw;
+  min-height: 100vh;
+  color: $navy;
+  font: 400 14px Inter, sans-serif;
+  overflow-x: hidden;
+  background: $white;
+}
+
+main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding-top: 140px;
+
+  @media #{$tablet} {
+    padding-top: 100px;
+  }
+
+  @media #{$phone} {
+    padding-top: 70px;
+  }
+
+  @media #{$mobile} {
+    padding-top: 60px;
+  }
+}
+
+h1 {
+  line-height: 52px;
+  font-size: 48px;
+  font-weight: 300;
+
+  @media #{$desktop} {
+    line-height: 44px;
+    font-size: 40px;
+  }
+
+  @media #{$phone} {
+    line-height: 36px;
+    font-size: 32px;
+  }
+}
+
+h2 {
+  line-height: 42px;
+  font-size: 38px;
+  font-weight: 200;
+
+  @media #{$desktop} {
+    line-height: 32px;
+    font-size: 28px;
+  }
+
+  @media #{$phone} {
+    line-height: 26px;
+    font-size: 22px;
+  }
+}
+
+h3 {
+  line-height: 36px;
+  font-size: 32px;
+  font-weight: 500;
+
+  @media #{$desktop} {
+    line-height: 28px;
+    font-size: 24px;
+  }
+
+  @media #{$phone} {
+    line-height: 22px;
+    font-size: 18px;
+  }
+}
+
+h4 {
+  line-height: 22px;
+  font-size: 18px;
+  font-weight: 400;
+
+  @media #{$phone} {
+    line-height: 20px;
+    font-size: 16px;
+  }
+}
+
+h5 {
+  line-height: 18px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+h6 {
+  line-height: 16px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+p {
+  line-height: 22px;
+  font-size: 18px;
+  font-weight: 400;
+
+  @media #{$desktop} {
+    line-height: 18px;
+    font-size: 14px;
+  }
+}
+
+a {
+  --link-hover-color: #{$midNightBlue};
+
+  position: relative;
+  display: inline-block;
+  margin: 0 -2px;
+  padding: 0 2px;
+  color: $blue;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  border-radius: 8px;
+
+  @include transition(color);
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--link-hover-color);
+
+    @include transition(width);
+  }
+
+  &:hover {
+    color: var(--link-hover-color);
+
+    &::before {
+      width: 100%;
+    }
+  }
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  color: $navy;
+  font: 400 14px Inter, sans-serif;
+  cursor: pointer;
+  border: 0;
+  background: 0;
+}
+
+sub,
+sup {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  font-size: 75%;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+input {
+  margin: 0;
+}

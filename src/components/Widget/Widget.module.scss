@@ -1,25 +1,79 @@
-.widget {
+.wrapper {
+  padding: 0;
+  width: 155px;
+  height: 40px;
   position: absolute;
-  top: 50%;
   right: 0;
   z-index: 1000;
-  transform: translateX(-50%);
+  top: 40%;
+  // transition: all 0.2s ease 0s;
+  // animation-name: lightSpeedInRight;
+  // animation-timing-function: ease-out;
 
   button {
-    width: 100px;
-    height: 100px;
-    border-radius: 50% 0 0 50%;
-    background-color: blue;
-    padding: 15px;
-    border: 1px solid #fcfcfc;
-    box-shadow: 0 17px 10px -10px rgba(0, 0, 0.4, 0.4);
+    width: 100%;
+    height: 40px;
+    margin: 0;
+    border: 1px solid steelblue;
+    background-color: steelblue;
     cursor: pointer;
-    transition: all ease-in-out 300ms;
+    border-radius: 100px 0px 0px 100px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    user-select: none;
+    padding: 0 10px;
+  }
+}
 
-    img {
-      width: 100%;
-      width: 100%;
-    }
+.expanded {
+  right: 320px;
+  width: auto;
+  // height: 40px;
+
+  p {
+    display: none;
+  }
+}
+
+.icon {
+  width: 25px;
+  height: 25px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s ease 0s;
+  }
+}
+
+p {
+  // display: none;
+  margin-left: 10px;
+  font-weight: 300;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  transition: transform 330ms ease-in-out;
+}
+
+
+
+@keyframes lightSpeedInRight {
+  from {
+    transform: translate3d(100%, 0, 0) skewX(-30deg);
+    opacity: 0;
   }
 
+  60% {
+    transform: skewX(20deg);
+    opacity: 1;
+  }
+
+  80% {
+    transform: skewX(-5deg);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
 }

@@ -12,23 +12,20 @@
     "tabs", 
     "storage",
     "activeTab",
+    "scripting",
+    "contextMenus",
     "webNavigation", 
     "https://localhost/*",
     "https://161.97.144.240/*", 
     "http://antonmlz.beget.tech/*",
     "https://www.linkedin.com/in/*/*"
   ],
-  "background": {
-    "scripts": ["./static/js/background.js"],
-    "persistent": false
-  },
   "content_scripts": [{
     "matches": [
+      "*://*/*",
       "https://www.linkedin.com/in/*"
     ],
-    "all_frames": false,
-    "js": ["./static/js/content.js"],
-    "run_at": "document_end"
+    "js": ["/static/js/main.js"]
   }],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "start_url": ".",

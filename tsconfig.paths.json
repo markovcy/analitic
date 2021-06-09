@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "paths": {
-      "uppeople/*": ["uppeople_f/src/*"],
-      "@uppeople/*": ["uppeople_f/src/*"]
+      "@upp/chrome/*": ["src/*"],
+      "@upp/crm/*": ["uppeople_f/src/*"]
     }
   }
 }

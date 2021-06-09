@@ -1,1 +1,1 @@
-export { default } from './ExtensionWrapper';
+export * from './ExtensionWrapper';

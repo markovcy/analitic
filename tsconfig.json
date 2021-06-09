@@ -27,10 +27,11 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src"
+    "src",
+    "typings"
   ],
   "exclude": [
-    "./node_modules",
+    "node_modules",
     "src/**/*.js"
   ]
 }

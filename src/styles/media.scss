@@ -1,0 +1,17 @@
+$mobile: 'screen and (max-width: 480px)';
+$phone: 'screen and (max-width: 767px)';
+$tablet: 'screen and (max-width: 991px)';
+$desktop: 'screen and (max-width: 1199px)';
+$large: 'screen and (max-width: 1599px)';
+$fullHD: 'screen and (max-width: 1919px)';
+
+/* stylelint-disable property-case */
+:export {
+  mobile: $mobile;
+  phone: $phone;
+  tablet: $tablet;
+  desktop: $desktop;
+  large: $large;
+  fullHD: $fullHD;
+}
+/* stylelint-enable property-case */

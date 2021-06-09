@@ -1,15 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { ChromeMessage, Sender } from '../../types';
+import cx from 'classnames';
+// import axios from 'axios';
+// import { ChromeMessage, Sender } from '../../types';
+import { Widget, Popup } from '@upp/chrome/components';
 
-import Styles from './ExtensionWrapper.module.scss';
+import styles from './ExtensionWrapper.module.scss';
 
-import { Widget } from '../index';
-
-const ExtensionWrapper = () => {
+export const ExtensionWrapper = () => {
   const [url, setUrl] = useState<string | undefined>('');
-  const [responseFromContent, setResponseFromContent] = useState<string>('');
+  const [isPopupVisible, setPopupVisible] = useState<boolean>(true);
+  // const [responseFromContent, setResponseFromContent] = useState<string>('');
 
   /**
    * Get current URL
@@ -17,32 +19,28 @@ const ExtensionWrapper = () => {
   useEffect(() => {
     const queryInfo = { active: true, lastFocusedWindow: true };
 
-    // chrome.tabs &&
-    //   chrome.tabs.query(queryInfo, (tabs) => {
-    //     console.log(tabs);
-    //     const { url } = tabs[0];
-    //     setUrl(url);
-    //   });
+    chrome.tabs &&
+      chrome.tabs.query(queryInfo, (tabs) => {
+        console.log(tabs);
+        const { url } = tabs[0];
+        setUrl(url);
+      });
   }, []);
 
-  // chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-  //   chrome.tabs.sendMessage(
-  //     // @ts-ignore
-  //     tabs[0].id,
-  //     { createDiv: { width: '100px', height: '100px', innerHTML: 'Hello' } },
-  //     function (response) {
-  //       console.log(response.confirmation);
-  //     }
-  //   );
-  // });
+  const onWidgetClick = () => {
+    setPopupVisible(!isPopupVisible);
+  };
 
   return (
-    <div className={Styles.wrapper}>
-      <Widget isCandidateExist={false} />
-      <p>URL:</p>
-      <p>{url}</p>
+    <div
+      className={cx(styles.wrapper, {
+        [styles.expanded]: isPopupVisible,
+      })}
+    >
+      {console.log('URL')}
+      {console.log(url)}
+      <Widget isExpanded={isPopupVisible} onWidgetClick={onWidgetClick} />
+      {isPopupVisible && <Popup isVisible={isPopupVisible} />}
     </div>
   );
 };
-
-export default ExtensionWrapper;
