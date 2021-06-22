@@ -51,14 +51,13 @@ export const useAxios = <T = any, TError = any>(
   config: AxiosRequestConfig | string,
   options?: Options & {
     disablePreservedKeys?: boolean;
-    forbidRepeatingRequests?: boolean;
   }
 ): [
   ResponseValues<T, TError>,
-  (config?: AxiosRequestConfig, options?: RefetchOptions) => AxiosPromise<T>
+  (config?: AxiosRequestConfig, options?: RefetchOptions) => AxiosPromise<T>,
+  () => void
 ] => {
-  const { forbidRepeatingRequests, disablePreservedKeys, ...otherOptions } =
-    options || {};
+  const { disablePreservedKeys, ...otherOptions } = options || {};
   let newOptions = config;
 
   const url = useMemo(
@@ -77,7 +76,7 @@ export const useAxios = <T = any, TError = any>(
     }
   }
 
-  const [data, execute] = useAxiosDefault<T>(newOptions, otherOptions);
+  const [data, execute, cancel] = useAxiosDefault<T>(newOptions, otherOptions);
 
-  return [data, execute];
+  return [data, execute, cancel];
 };

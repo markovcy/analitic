@@ -1,0 +1,15 @@
+@import '@upp/chrome/styles/colors';
+
+.icon {
+  width: 20px;
+  height: 20px;
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}

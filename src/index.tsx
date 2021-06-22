@@ -5,23 +5,34 @@ import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 
 import './styles/index.scss';
+import styles from './styles/dev.module.scss';
 
-// Get the element to prepend our app to. This could be any element on a specific website or even just `document.body`.
 const viewport = document.body;
+const appId = process.env.REACT_APP_ID;
+const isDev = process.env.NODE_ENV === 'development';
 
-// Create a div to render the <App /> component to.
-const app = document.createElement('div');
-
-// Set the app element's id to `root`. This is the same as the element that create-react-app renders to by default so it will work on the local server too.
-app.id = 'root';
-
-// Prepend the <App /> component to the viewport element if it exists. You could also use `appendChild` depending on your needs.
 if (viewport) {
-  viewport.prepend(app);
-}
+  let root = viewport.querySelector(`#${appId}`);
 
-// Render the <App /> component.
-ReactDOM.render(<App />, document.getElementById('root'));
+  if (!root) {
+    root = document.createElement('div');
+    root.id = appId || '';
+    root.attachShadow({ mode: 'open' });
+  }
+
+  if (!root.shadowRoot) {
+    viewport.appendChild(root);
+  }
+
+  const app = document.createElement('div');
+
+  if (isDev) {
+    app.classList.add(styles.body);
+  }
+
+  root.shadowRoot?.prepend(app);
+  ReactDOM.render(<App />, app);
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

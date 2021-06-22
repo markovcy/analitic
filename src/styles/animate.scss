@@ -1,5 +1,12 @@
 
-@mixin transition($rules: all, $delay: 0.3s, $type: ease-in-out) {
+@mixin animate($animation, $duration: 0.3s, $delay: 0s) {
+  animation-name: $animation;
+  animation-duration: $duration;
+  animation-delay: $delay;
+  animation-fill-mode: both;
+}
+
+@mixin transition($rules: all, $delay: 0.3s, $type: ease) {
   transition: $rules $delay $type;
 }
 
@@ -18,6 +25,20 @@
   to {
     opacity: 1;
     visibility: visible;
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(100px);
+  }
+
+  to {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(0);
   }
 }
 

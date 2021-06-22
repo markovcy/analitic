@@ -1,0 +1,62 @@
+@import '@upp/chrome/styles/media';
+@import '@upp/chrome/styles/colors';
+@import '@upp/chrome/styles/mixins';
+
+.attachment {
+  position: relative;
+  margin: 0 auto;
+  height: 120px;
+}
+
+.defaultValue {
+  position: absolute;
+  top: 0;
+  right: -60px;
+  opacity: 0.6;
+  border-radius: 50%;
+
+  @include transition();
+
+  &:focus,
+  &:hover {
+    right: -30px;
+    opacity: 1;
+  }
+
+  &.value {
+    position: relative;
+    right: 0;
+    opacity: 1;
+    cursor: default;
+
+    &:focus,
+    &:hover {
+      right: 0;
+      box-shadow: none;
+    }
+  }
+}
+
+.photo {
+  position: relative;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: $clouds;
+  box-shadow: 0 0 3px -1px $clouds;
+
+  @include transition();
+}
+
+.noPhoto {
+  width: 40px;
+  height: 40px;
+
+  path {
+    fill: $gainsBoro;
+  }
+}

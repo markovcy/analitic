@@ -1,39 +1,27 @@
-import React, { memo, useMemo, useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { memo } from 'react';
 import { ConnectedRouter } from 'connected-react-router';
 
 import { history } from '@upp/chrome/store';
-import { AuthContainer } from '@upp/chrome/modules';
+import { CandidateForm } from '@upp/chrome/pages';
 import {
-  NotFound,
-  ExtensionWrapper,
-  CandidateForm,
-} from '@upp/chrome/components';
-
-const routes = [
-  {
-    path: '/',
-    component: ExtensionWrapper,
-  },
-];
+  AuthContainer,
+  NavigationButton,
+  NavigationContainer,
+} from '@upp/chrome/modules';
+import { ErrorBoundary } from '@upp/chrome/components';
 
 export const Layout = memo(() => {
   return (
     <ConnectedRouter history={history}>
-      <AuthContainer>
-        <Switch>
-          {routes.map((route) => (
-            <Route
-              exact
-              key={route.path}
-              path={route.path}
-              component={route.component}
-            />
-          ))}
-          <Route component={NotFound} />
-          <CandidateForm />
-        </Switch>
-      </AuthContainer>
+      <NavigationButton />
+
+      <ErrorBoundary>
+        <NavigationContainer>
+          <AuthContainer>
+            <CandidateForm />
+          </AuthContainer>
+        </NavigationContainer>
+      </ErrorBoundary>
     </ConnectedRouter>
   );
 });

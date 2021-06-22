@@ -1,0 +1,58 @@
+@import '@upp/chrome/styles/colors';
+@import '@upp/chrome/styles/animate';
+@import '@upp/chrome/styles/mixins';
+
+.icon {
+  width: 32px;
+  height: 32px;
+
+  @include transition();
+
+  path {
+    fill: $darkBlue;
+  }
+}
+
+.button {
+  position: fixed;
+  top: 5%;
+  right: -300px;
+  display: flex;
+  padding: 16px 308px 16px 16px;
+  opacity: 0.75;
+  cursor: pointer;
+  border: 1px solid $concrete;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background: $white;
+  z-index: 9998;
+
+  @include transition(all, 0.5s);
+  @include animate(fadeInLeft, 1s);
+
+  &:hover {
+    opacity: 1;
+
+    .icon {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.opened {
+  opacity: 1;
+  margin-right: 300px;
+
+  .icon {
+    transform: rotate(90deg);
+  }
+
+  &:hover {
+    opacity: 1;
+    border-color: $concrete;
+
+    .icon {
+      transform: rotate(90deg);
+    }
+  }
+}

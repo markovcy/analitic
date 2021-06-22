@@ -1,0 +1,14 @@
+@import '@upp/chrome/styles/media';
+@import '@upp/chrome/styles/colors';
+@import '@upp/chrome/styles/animate';
+
+.appVersion {
+  margin-top: 20px;
+  color: $concrete;
+  text-align: center;
+}
+
+.copyright {
+  color: $darkGray;
+  text-align: center;
+}

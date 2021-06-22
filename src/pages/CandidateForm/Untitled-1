@@ -1,0 +1,126 @@
+[
+  {
+    "name": "img",
+    "title": "Image",
+    "selector": ".presence-entity__image.pv-top-card__photo",
+    "type": "attachment"
+  },
+  {
+    "name": "name",
+    "required": true,
+    "title": "Name",
+    "selector": "h1",
+    "iconName": "user",
+    "type": "text"
+  },
+  {
+    "required": true,
+    "name": "platform",
+    "title": "Platform",
+    "selector": "#ember407 > div.ph5 > div.display-flex.justify-space-between.pt2 > div > div.text-body-medium.break-words",
+    "type": "select",
+    "data": [
+      {
+        "value": "animator",
+        "label": "animator"
+      },
+      {
+        "value": "soft",
+        "label": "Software Engineer"
+      }
+    ]
+  },
+  {
+    "required": true,
+    "name": "seniorities",
+    "title": "Seniorities",
+    "selector": "#ember407 > div.ph5 > div.display-flex.justify-space-between.pt2 > div > div.text-body-medium.break-words",
+    "type": "select",
+    "data": [
+      {
+        "value": "animator",
+        "label": "animator"
+      },
+      {
+        "value": "soft",
+        "label": "Software Engineer"
+      }
+    ]
+  },
+  {
+    "required": true,
+    "name": "language",
+    "title": "Language",
+    "selector": "#ember407 > div.ph5 > div.display-flex.justify-space-between.pt2 > div > div.text-body-medium.break-words",
+    "type": "select",
+    "data": [
+      {
+        "value": "animator",
+        "label": "animator"
+      },
+      {
+        "value": "soft",
+        "label": "Software Engineer"
+      }
+    ]
+  },
+  {
+    "name": "salary",
+    "required": true,
+    "title": "Salary",
+    "iconName": "salary",
+    "type": "text"
+  },
+  {
+    "required": true,
+    "name": "vacancies",
+    "title": "Vacancies",
+    "type": "select",
+    "data": [
+      {
+        "value": "animator",
+        "label": "animator"
+      },
+      {
+        "value": "soft",
+        "label": "Software Engineer"
+      }
+    ]
+  },
+  {
+    "name": "phone",
+    "title": "Phone",
+    "iconName": "phone",
+    "selector": ".top-bar",
+    "type": "tel"
+  },
+  {
+    "name": "skype",
+    "title": "Skype",
+    "iconName": "skype",
+    "type": "text"
+  },
+  {
+    "name": "email",
+    "title": "Email",
+    "iconName": "mail",
+    "type": "email"
+  },
+  {
+    "name": "linkedin",
+    "title": "Linkedin",
+    "iconName": "linkedin",
+    "type": "text"
+  },
+  {
+    "name": "resume",
+    "title": "Resume",
+    "iconName": "cv",
+    "type": "text"
+  },
+  {
+    "name": "note",
+    "title": "Note",
+    "type": "textarea"
+  }
+]

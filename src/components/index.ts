@@ -1,9 +1,10 @@
 export * from './Themr';
 
-export * from './Popup';
-export * from './Widget';
-export * from './AuthForm';
+export * from './Icon';
+export * from './Header';
 export * from './NotFound';
 export * from './Button';
-export * from './CandidateForm';
-export * from './ExtensionWrapper';
+export * from './Spinner';
+export * from './Footer';
+export * from './ErrorBoundary';
+export * from './PlaceholderError';

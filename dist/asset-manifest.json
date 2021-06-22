@@ -1,15 +1,32 @@
 {
   "files": {
-    "main.css": "/static/css/main.169eb287.css",
     "main.js": "/static/js/main.js",
-    "static/js/1.2101c140.chunk.js": "/static/js/1.2101c140.chunk.js",
+    "main.js.map": "/static/js/main.js.map",
+    "static/js/1.chunk.js": "/static/js/1.chunk.js",
+    "static/js/1.chunk.js.map": "/static/js/1.chunk.js.map",
     "index.html": "/index.html",
-    "static/js/main.js.LICENSE.txt": "/static/js/main.js.LICENSE.txt",
-    "static/media/logo_black.b9c6f750.png": "/static/media/logo_black.b9c6f750.png",
-    "static/media/logo_white.2e0baacb.png": "/static/media/logo_white.2e0baacb.png"
+    "static/media/OpenSans-Bold.ttf": "/static/media/OpenSans-Bold.dbb97fd9.ttf",
+    "static/media/OpenSans-ExtraBold.ttf": "/static/media/OpenSans-ExtraBold.110e781b.ttf",
+    "static/media/OpenSans-Light.ttf": "/static/media/OpenSans-Light.ed41bedf.ttf",
+    "static/media/OpenSans-Regular.ttf": "/static/media/OpenSans-Regular.1b0809d5.ttf",
+    "static/media/OpenSans-SemiBold.ttf": "/static/media/OpenSans-SemiBold.a16d8201.ttf",
+    "static/media/button-navigation.1cfcd056.svg": "/static/media/button-navigation.1cfcd056.svg",
+    "static/media/close.b7a9c534.svg": "/static/media/close.b7a9c534.svg",
+    "static/media/cv.de1c7ffe.svg": "/static/media/cv.de1c7ffe.svg",
+    "static/media/error-404.10e9144a.svg": "/static/media/error-404.10e9144a.svg",
+    "static/media/error-boundary.130586d4.svg": "/static/media/error-boundary.130586d4.svg",
+    "static/media/error.ba2f4ec1.svg": "/static/media/error.ba2f4ec1.svg",
+    "static/media/linkedin.7cc49b82.svg": "/static/media/linkedin.7cc49b82.svg",
+    "static/media/lock.9c55e625.svg": "/static/media/lock.9c55e625.svg",
+    "static/media/logo.bd2efe41.svg": "/static/media/logo.bd2efe41.svg",
+    "static/media/logout.4c3a4716.svg": "/static/media/logout.4c3a4716.svg",
+    "static/media/mail.049c3c1a.svg": "/static/media/mail.049c3c1a.svg",
+    "static/media/no-photo.73cafe45.svg": "/static/media/no-photo.73cafe45.svg",
+    "static/media/salary.dbba2849.svg": "/static/media/salary.dbba2849.svg",
+    "static/media/skype.53b0f2b2.svg": "/static/media/skype.53b0f2b2.svg",
+    "static/media/user.10a93f10.svg": "/static/media/user.10a93f10.svg"
   },
   "entrypoints": [
-    "static/css/main.169eb287.css",
     "static/js/main.js"
   ]
 }

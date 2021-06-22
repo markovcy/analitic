@@ -1,5 +1,5 @@
-@import '@ui/styles/colors';
-@import '@ui/styles/animate';
+@import '@upp/chrome/styles/colors';
+@import '@upp/chrome/styles/animate';
 
 @mixin cross($size: 14px) {
   --background-color: #{$asbestos};
@@ -68,11 +68,4 @@
   &:hover {
     box-shadow: 0 4px 8px rgba($midNightBlue, 0.16);
   }
-}
-
-@mixin animate($animation, $duration: 0.3s, $delay: 0s) {
-  animation-name: $animation;
-  animation-duration: $duration;
-  animation-delay: $delay;
-  animation-fill-mode: both;
 }

@@ -6,6 +6,7 @@ const TYPES = [
   actions.REQUEST,
   actions.SUCCESS,
   actions.SAVE,
+  actions.INIT,
   actions.REMOVE,
   actions.OPEN,
   actions.CLOSE,
@@ -75,6 +76,9 @@ export const generateActions = (base: actions.Types): actions.Actions => {
     }),
     open: callback({
       type: base.OPEN,
+    }),
+    init: callback({
+      type: base.INIT,
     }),
     close: callback({
       type: base.CLOSE,

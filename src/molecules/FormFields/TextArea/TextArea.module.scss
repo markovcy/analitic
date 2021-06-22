@@ -1,0 +1,60 @@
+@import '@upp/chrome/styles/colors';
+@import '@upp/chrome/styles/animate';
+
+.containerTextarea {
+  position: relative;
+}
+
+.textarea {
+  margin-top: 5px;
+  width: 100%;
+  min-height: 120px;
+  max-height: 240px;
+  padding: 8px;
+  font-family: OpenSans, sans-serif;
+  resize: vertical;
+  border: 1px solid $concrete;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+
+  &:focus {
+    border-color: $deepSkyBlue;
+  }
+
+  &:disabled {
+    color: $asbestos;
+    border-color: $clouds;
+    background: $clouds;
+  }
+
+  &::placeholder {
+    color: $concrete;
+  }
+}
+
+.counter {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  color: $asbestos;
+}
+
+.container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 708px;
+
+  &:hover {
+    .textarea {
+      border-color: $deepSkyBlue;
+    }
+  }
+
+  &.error {
+    .textarea {
+      border-color: $crimson;
+    }
+  }
+}

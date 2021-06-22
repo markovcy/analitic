@@ -1,0 +1,35 @@
+@import '@upp/chrome/styles/colors';
+
+.errorBoundary {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.icon {
+  margin-bottom: 20px;
+  width: 125px;
+  height: 125px;
+
+  path {
+    fill: $crimson;
+  }
+}
+
+.button {
+  margin-top: 40px;
+}
+
+.error {
+  margin-top: 10px;
+  color: $darkRed;
+}
+
+.description {
+  margin-top: 10px;
+  color: $darkOrange;
+}

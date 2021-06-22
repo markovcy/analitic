@@ -4,7 +4,7 @@
   "manifest_version": 2,
   "description": "Chrome extension UPPeople, to immediately add candidates from LinkedIn into your base. UPPeople - power UP your recruitment!",
   "browser_action": {
-    "default_icon": "logo512.png",
+    "default_icon": "logo.png",
     "default_popup": "popup.html",
     "default_title": "UpPeople parser"
   },
@@ -22,7 +22,7 @@
   ],
   "content_scripts": [{
     "matches": [
-      "*://*/*",
+      "https://www.google.com/*",
       "https://www.linkedin.com/in/*"
     ],
     "js": ["/static/js/main.js"]

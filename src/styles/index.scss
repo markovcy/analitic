@@ -1,46 +1,25 @@
 @import '~reset-css';
+@import '~react-phone-input-2/lib/high-res.css';
 @import './colors';
+@import './fonts';
 @import './animate';
 @import './media';
 
 * > :focus {
-  --box-shadow-color: #{$deepSkyBlue};
-
   outline: none;
-  box-shadow: 0 0 1px 2px var(--box-shadow-color);
+  box-shadow: 0 0 1px 2px $deepSkyBlue;
 
-  @include transition(box-shadow);
-}
-
-body {
-  min-width: 100vw;
-  min-height: 100vh;
-  color: $navy;
-  font: 400 14px Inter, sans-serif;
-  overflow-x: hidden;
-  background: $white;
+  @include transition(all, 0.5s);
 }
 
 main {
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding-top: 140px;
-
-  @media #{$tablet} {
-    padding-top: 100px;
-  }
-
-  @media #{$phone} {
-    padding-top: 70px;
-  }
-
-  @media #{$mobile} {
-    padding-top: 60px;
-  }
 }
 
 h1 {
+  margin: 0;
   line-height: 52px;
   font-size: 48px;
   font-weight: 300;
@@ -57,6 +36,7 @@ h1 {
 }
 
 h2 {
+  margin: 0;
   line-height: 42px;
   font-size: 38px;
   font-weight: 200;
@@ -73,6 +53,7 @@ h2 {
 }
 
 h3 {
+  margin: 0;
   line-height: 36px;
   font-size: 32px;
   font-weight: 500;
@@ -89,6 +70,7 @@ h3 {
 }
 
 h4 {
+  margin: 0;
   line-height: 22px;
   font-size: 18px;
   font-weight: 400;
@@ -100,18 +82,21 @@ h4 {
 }
 
 h5 {
+  margin: 0;
   line-height: 18px;
   font-size: 14px;
   font-weight: 400;
 }
 
 h6 {
+  margin: 0;
   line-height: 16px;
   font-size: 12px;
   font-weight: 400;
 }
 
 p {
+  margin: 0;
   line-height: 22px;
   font-size: 18px;
   font-weight: 400;
@@ -162,27 +147,10 @@ button {
   margin: 0;
   padding: 0;
   color: $navy;
-  font: 400 14px Inter, sans-serif;
+  font: 400 14px OpenSans, sans-serif;
   cursor: pointer;
   border: 0;
   background: 0;
-}
-
-sub,
-sup {
-  position: relative;
-  display: inline-block;
-  line-height: 0;
-  font-size: 75%;
-  vertical-align: baseline;
-}
-
-sup {
-  top: -0.5em;
-}
-
-sub {
-  bottom: -0.25em;
 }
 
 input {

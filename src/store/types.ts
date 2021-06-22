@@ -1,5 +1,6 @@
 import { BurgerMenu } from 'redux-burger-menu';
 import { RouterState } from 'connected-react-router';
+import { FormState } from '@upp/chrome/modules';
 
 import * as types from '@upp/chrome/types';
 
@@ -10,12 +11,14 @@ export const SUCCESS = 'SUCCESS';
 export const SAVE = 'SAVE';
 export const REMOVE = 'REMOVE';
 export const OPEN = 'OPEN';
+export const INIT = 'INIT';
 export const CLOSE = 'CLOSE';
 
 export type State = {
   router: RouterState;
   burgerMenu: BurgerMenu;
   user: types.User | null;
+  form: FormState;
 };
 
 export type Types = {
@@ -25,6 +28,7 @@ export type Types = {
   REQUEST: string;
   SUCCESS: string;
   SAVE: string;
+  INIT: string;
   REMOVE: string;
   OPEN: string;
   CLOSE: string;
@@ -51,6 +55,7 @@ type TActions =
   | 'request'
   | 'success'
   | 'save'
+  | 'init'
   | 'remove'
   | 'open'
   | 'close';

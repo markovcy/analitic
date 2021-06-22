@@ -1,0 +1,48 @@
+@import '@upp/chrome/styles/media';
+@import '@upp/chrome/styles/colors';
+@import '@upp/chrome/styles/animate';
+
+.form {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1440px;
+  height: 100%;
+}
+
+.title,
+.description {
+  margin: 0;
+  text-align: center;
+}
+
+.description {
+  padding-top: 10px;
+  color: $airForce;
+  line-height: 16px;
+  font-size: 16px;
+}
+
+.error {
+  color: $crimson;
+}
+
+.fields {
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.submit {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.spinner {
+  margin-right: 8px;
+}
+
+.button {
+  margin-top: 20px;
+}

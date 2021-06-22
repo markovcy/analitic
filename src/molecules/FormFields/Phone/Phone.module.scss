@@ -1,0 +1,137 @@
+/* stylelint-disable no-descending-specificity */
+@import '@upp/chrome/styles/media';
+@import '@upp/chrome/styles/colors';
+@import '@upp/chrome/styles/animate';
+@import '@upp/chrome/styles/mixins';
+@import '../DefaultInput/DefaultInput.module.scss';
+
+.phone {
+  display: block;
+  width: 100%;
+  min-width: 240px;
+
+  .container {
+    margin-top: 5px;
+
+    .input {
+      @extend .input;
+
+      width: 100%;
+      padding-left: 52px;
+      transition-property: border, box-shadow;
+
+      &.error {
+        @extend .error;
+      }
+
+      &:global(.open) {
+        z-index: 0;
+      }
+    }
+
+    .button {
+      top: 1px;
+      bottom: 1px;
+      left: 1px;
+      border: 0;
+      border-radius: 8px;
+      background: $white;
+
+      :global(.selected-flag) {
+        position: absolute;
+        top: 0;
+        width: 48px;
+        padding-left: 16px;
+        box-sizing: initial;
+
+        &:focus {
+          box-shadow: none;
+        }
+
+        &:hover {
+          background: none;
+        }
+
+        :global(.flag) {
+          width: 24px;
+        }
+      }
+
+      :global(.country) {
+        display: flex;
+        align-items: center;
+        padding: 6px 8px;
+        color: $gainsBoro;
+        cursor: pointer;
+        border-radius: 8px;
+
+        @include transition();
+
+        &.checked,
+        &:hover {
+          color: $navy;
+          background: $lightGray;
+
+          .icon :global(path) {
+            fill: $navy;
+          }
+        }
+
+        &.checked {
+          cursor: default;
+        }
+
+        :global(.country-name) {
+          margin-left: 8px;
+        }
+
+        :global(.flag) {
+          position: relative;
+          top: 0;
+          left: 0;
+          width: 24px;
+          height: 24px;
+        }
+      }
+
+      &:global(.open) {
+        border-radius: 8px;
+
+        :global(.selected-flag) {
+          border-radius: 8px;
+          background: none;
+        }
+      }
+
+      &.disabledButton {
+        background: $lightGray;
+
+        &:focus,
+        :global(.selected-flag) {
+          box-shadow: none;
+        }
+      }
+    }
+
+    .select {
+      position: absolute;
+      top: calc(100% + 1px);
+      margin-top: 8px;
+      width: 320px;
+      min-width: 120px;
+      max-height: 200px;
+      padding: 8px 8px;
+      opacity: 0;
+      visibility: hidden;
+      border: 1px solid $clouds;
+      border-radius: 5px;
+      border-top: 0;
+      background-color: #fff;
+      box-shadow: 0 4px 6px -2px $concrete;
+      box-sizing: border-box;
+      z-index: 9;
+
+      @include animate(fadeIn);
+    }
+  }
+}

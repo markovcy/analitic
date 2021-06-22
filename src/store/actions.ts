@@ -1,6 +1,11 @@
-import { authActions } from '@upp/chrome/modules';
+import {
+  authActions,
+  formActions,
+  navigationActions,
+} from '@upp/chrome/modules';
 
 export const actions = {
   ...authActions,
-  // ...navigationActions,
+  ...formActions,
+  ...navigationActions,
 };

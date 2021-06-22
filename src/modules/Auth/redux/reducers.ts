@@ -1,24 +1,12 @@
-import { axios } from '@upp/chrome/utils';
-import { store, types, history } from '@upp/chrome/store';
+import { store, types } from '@upp/chrome/store';
+import { axios, storage } from '@upp/chrome/utils';
 
 import * as actions from './actions';
-
-const userFromLocalStorage = localStorage.getItem(actions.USER.id);
-
-const userData = (userFromLocalStorage
-  ? JSON.parse(userFromLocalStorage)
-  : null) as types.State['user'];
 
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error?.response?.status === 401) {
-      const { pathname, search } = window.location;
-
-      if (!pathname.includes('/office/signin')) {
-        history.replace(`/signin?redirectUrl=${pathname}${search}`);
-      }
-
       if (store) {
         store.dispatch(actions.user.remove());
       }
@@ -30,17 +18,17 @@ axios.interceptors.response.use(
   }
 );
 
-if (userData?.accessToken) {
-  axios.defaults.headers.common.Authorization = `Bearer ${userData?.accessToken}`;
-}
-
 export const user = (
-  state: types.State['user'] = userData,
+  state: types.State['user'] = null,
   { type, payload }: types.BaseAction<types.State['user']>
 ) => {
   switch (type) {
-    case actions.USER.SAVE: {
-      localStorage.setItem(actions.USER.id, JSON.stringify(payload?.user));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    case actions.USER.SAVE:
+      storage.set(actions.USER.id, JSON.stringify(payload?.user));
+    // eslint-disable-next-line no-fallthrough
+    case actions.USER.INIT: {
       axios.defaults.headers.common.Authorization = `Bearer ${payload?.user?.accessToken}`;
 
       return {
@@ -50,7 +38,7 @@ export const user = (
     }
 
     case actions.USER.REMOVE: {
-      localStorage.removeItem(actions.USER.id);
+      storage.remove(actions.USER.id);
       delete axios.defaults.headers.common.Authorization;
 
       return null;

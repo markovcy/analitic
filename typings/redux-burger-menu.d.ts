@@ -30,7 +30,7 @@ declare module 'redux-burger-menu' {
 
   export function action(isOpen: boolean, menuId?: string): ReturnReducer;
   export function reducer(
-    state: ReturnReducer,
+    state: BurgerMenu,
     action: ReturnReducer
   ): BurgerMenuWithMenuId;
   export const decorator = (
