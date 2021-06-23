@@ -1,12 +1,19 @@
-import React, { memo, useMemo, useEffect, useState, useCallback } from 'react';
+import React, { memo, useMemo, useEffect, useCallback } from 'react';
 import { addDays, differenceInSeconds } from 'date-fns';
+import { useLocation } from 'react-router-dom';
+import { camelCase } from 'lodash';
 
 import * as types from '@upp/chrome/types';
 import { FormFields } from '@upp/chrome/molecules';
 import { storage, useAxios } from '@upp/chrome/utils';
 import { useGetState, useGetAction } from '@upp/chrome/store';
 import { FormContainer, formConstants } from '@upp/chrome/modules';
-import { Spinner, PlaceholderError, IconsType } from '@upp/chrome/components';
+import {
+  Spinner,
+  NotFound,
+  IconsType,
+  PlaceholderError,
+} from '@upp/chrome/components';
 
 import styles from './CandidateForm.module.scss';
 
@@ -30,9 +37,66 @@ const ConsistensIcons: Record<string, IconsType> = {
   linkedin: 'linkedin',
 };
 
+const OrderFields = [
+  'avatar',
+  'name',
+  'platforms[]',
+  'seniority_id',
+  'vacancies[]',
+  'tag_id',
+  'salary',
+  'language',
+  'phone',
+  'skype',
+  'email',
+  'linkedin',
+  'cv',
+  'comments',
+];
+
+const ConsistensSelectors: Record<string, string> = {
+  name: 'h1',
+  salary: '',
+  email:
+    '.ember-view .pv-profile-section__section-info.section-info .pv-contact-info__contact-type.ci-email .pv-contact-info__ci-container.t-14 .pv-contact-info__contact-link.link-without-visited-state.t-14',
+  phone:
+    '.pv-profile-section__section-info.section-info .pv-contact-info__contact-type.ci-phone .list-style-none .pv-contact-info__ci-container.t-14 .t-14.t-black.t-normal',
+  skype:
+    '.pv-profile-section__section-info.section-info .pv-contact-info__contact-type.ci-ims .list-style-none .pv-contact-info__ci-container.t-14 .pv-contact-info__contact-item.t-14.t-black.t-normal',
+  link: '',
+  linkedin: '',
+  status: '',
+  tag_id: '',
+  comments:
+    '.core-rail .profile-detail .pv-oc.ember-view .artdeco-container-card.pv-profile-section.pv-about-section.ember-view .pv-about__summary-text.mt4.t-14.ember-view',
+  date: '',
+  recruter_id: '',
+  cv: '',
+  experience: '',
+  education: '',
+  language:
+    '.ember-view .pv-profile-section__section-info.section-info .pv-contact-info__contact-type.ci-email .pv-contact-info__ci-container.t-14 .pv-contact-info__contact-link.t-14.t-black.t-normal',
+  file: '',
+  avatar:
+    '.display-flex .pv-top-card--photo.text-align-left .pv-top-card__photo-wrapper.ml0 .presence-entity.pv-top-card__image.presence-entity--size-9.ember-view .pv-top-card__photo.presence-entity__image.EntityPhoto-circle-9.lazy-image.ember-view',
+  seniority_id: '',
+  date_follow_up: '',
+  'vacancies[]': '',
+  'platforms[]':
+    '.ph5.pb5 .display-flex.mt2 .flex-1.mr5  .mt1.t-18.t-black.t-normal.break-words',
+};
+
+// TODO: need to optimization on server
+const SUFFIX_URL = 'https://www.linkedin.com/in';
+
+const SUFFIX_PATHNAME = '/in/';
+
 export const CandidateForm = memo(() => {
   const form = useGetState<'form'>('form');
   const formActions = useGetAction<'form'>('form');
+  const toggleMenu = useGetAction<'toggleMenu'>('toggleMenu');
+
+  const location = useLocation();
 
   const [formAxios, getForm] = useAxios<FormData>(
     {
@@ -94,7 +158,7 @@ export const CandidateForm = memo(() => {
       const initForm = await storage.get(formConstants.FORM.id);
       const parsedForm = initForm && JSON.parse(initForm);
 
-      if (parsedForm) {
+      if (parsedForm?.candidate) {
         formActions.init(parsedForm);
       } else {
         onGetForm();
@@ -104,27 +168,81 @@ export const CandidateForm = memo(() => {
     }
   }, [formActions, onGetForm]);
 
-  const fields: FormFields.types.Field[] = useMemo(() => {
-    const data = candidate.data?.data;
+  const aliasCandidate = useMemo(() => {
+    const macthes =
+      location.pathname.startsWith(SUFFIX_PATHNAME) &&
+      location.pathname.match(/\/([^/]+)\/?$/);
 
-    if (data && form.candidate?.fields) {
-      return form.candidate?.fields.map((f) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        if (data[f.name]) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          f.value = data[f.name];
-        }
-
-        return f;
-      });
+    if (macthes && macthes?.length === 2) {
+      return macthes[0];
     }
 
-    return form.candidate?.fields || [];
-  }, [candidate, form.candidate?.fields]);
+    // Cannot update a component while rendering a different component
+    setTimeout(() => {
+      toggleMenu(false);
+    }, 300);
+    return undefined;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
+  const onGetCandidate = useCallback(async () => {
+    formActions.update({
+      key: 'candidate',
+      values: undefined,
+    });
+
+    if (!aliasCandidate) {
+      return;
+    }
+
+    const data = new FormData();
+    data.append('url', `${SUFFIX_URL}${aliasCandidate}`);
+
+    try {
+      const response = await getCandidate({
+        data,
+      });
+
+      if (response.status !== 204) {
+        formActions.update({
+          key: 'candidate',
+          values: { ...response.data.data },
+        });
+      }
+
+      // eslint-disable-next-line no-empty
+    } catch {}
+  }, [formActions, aliasCandidate, getCandidate]);
+
+  const fields: FormFields.types.Field[] = useMemo(() => {
+    const data = form.candidate?.values || {};
+    const fieldsForm = form.candidate?.fields;
+
+    return (
+      (fieldsForm &&
+        (OrderFields.map((n) => fieldsForm.find((f) => f.name === n)).filter(
+          Boolean
+        ) as FormFields.types.Field[]).map((f) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          const value = data[f.name] || data[camelCase(f.name)];
+
+          f.value = value;
+
+          if (ConsistensSelectors[f.name]) {
+            f.selector = f.selector || ConsistensSelectors[f.name];
+          }
+
+          return f;
+        })) ||
+      []
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.candidate?.fields, form.candidate?.values, aliasCandidate]);
 
   useEffect(() => {
+    onGetCandidate();
+
     if (!form.candidate) {
       return;
     }
@@ -137,23 +255,8 @@ export const CandidateForm = memo(() => {
     ) {
       onGetForm();
     }
-
-    const data = new FormData();
-    data.append(
-      'url',
-      'https://www.linkedin.com/in/alexandr-tretiakov-ba831051/'
-    );
-    data.append('name', 'Alexandr Tretiakov');
-
-    getCandidate({
-      data,
-    });
-
-    // setTimeout(() => {
-    //   onGetForm();
-    // }, 3000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.candidate]);
+  }, [aliasCandidate]);
 
   useEffect(() => {
     if (!form.candidate) {
@@ -175,13 +278,34 @@ export const CandidateForm = memo(() => {
     return <Spinner theme={{ circle: styles.spinner }} />;
   }
 
+  if (!aliasCandidate) {
+    return <NotFound />;
+  }
+
   return (
-    <FormContainer
-      data={fields}
-      titleSubmitButton="Update"
-      loading={candidate.loading}
-      action={form.candidate?.action}
-      theme={{ form: styles.form }}
-    />
+    <div>
+      {candidate.data?.crmUrl && (
+        <a
+          target="_blank"
+          rel="noreferrer"
+          className={styles.link}
+          href={candidate.data?.crmUrl}
+        >
+          Open {candidate.data?.data.name}
+        </a>
+      )}
+
+      <FormContainer
+        data={fields}
+        loading={candidate.loading}
+        theme={{ form: styles.form }}
+        action={form.candidate?.action}
+        titleSubmitButton={
+          form.candidate?.values
+            ? 'Update (do not work)'
+            : 'Create (do not work)'
+        }
+      />
+    </div>
   );
 });

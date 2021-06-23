@@ -22,7 +22,6 @@
   ],
   "content_scripts": [{
     "matches": [
-      "https://www.google.com/*",
       "https://www.linkedin.com/in/*"
     ],
     "js": ["/static/js/main.js"]

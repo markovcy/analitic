@@ -10,6 +10,7 @@ export const REQUEST = 'REQUEST';
 export const SUCCESS = 'SUCCESS';
 export const SAVE = 'SAVE';
 export const REMOVE = 'REMOVE';
+export const UPDATE = 'UPDATE';
 export const OPEN = 'OPEN';
 export const INIT = 'INIT';
 export const CLOSE = 'CLOSE';
@@ -27,6 +28,7 @@ export type Types = {
   FAILURE: string;
   REQUEST: string;
   SUCCESS: string;
+  UPDATE: string;
   SAVE: string;
   INIT: string;
   REMOVE: string;
@@ -43,10 +45,10 @@ export interface Meta {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface BaseAction<T = any> {
-  type: string;
+export interface BaseAction<T extends Types = any, P = any> {
+  type: T;
   meta: Meta;
-  payload?: { [key: string]: T };
+  payload?: P;
 }
 
 type TActions =
@@ -54,6 +56,7 @@ type TActions =
   | 'failure'
   | 'request'
   | 'success'
+  | 'update'
   | 'save'
   | 'init'
   | 'remove'

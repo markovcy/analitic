@@ -47,6 +47,7 @@ export type DefaultField<
   };
 
 export type Option = {
+  id: number;
   label: string;
   value: string;
 };
@@ -56,7 +57,8 @@ export type Suggestions = {
   name?: string;
 };
 
-export type Select = BaseField<TypeField.Select> & {
+export type Select = Omit<BaseField<TypeField.Select>, 'value'> & {
+  value?: string | string[];
   data?: Option[];
   multiple?: boolean;
   suggestions?: Suggestions;

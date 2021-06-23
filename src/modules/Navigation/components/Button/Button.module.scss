@@ -9,7 +9,7 @@
   @include transition();
 
   path {
-    fill: $darkBlue;
+    fill: $crimson;
   }
 }
 
@@ -21,7 +21,7 @@
   padding: 16px 308px 16px 16px;
   opacity: 0.75;
   cursor: pointer;
-  border: 1px solid $concrete;
+  border: 1px solid $darkRed;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   background: $white;
@@ -30,21 +30,51 @@
   @include transition(all, 0.5s);
   @include animate(fadeInLeft, 1s);
 
+  &:focus {
+    box-shadow: 0 0 1px 2px $coral;
+  }
+
   &:hover {
     opacity: 1;
 
     .icon {
-      transform: rotate(90deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  &.notAuth {
+    border-color: $asbestos;
+    background: $lightGray;
+
+    &:focus {
+      box-shadow: 0 0 1px 2px $concrete;
+    }
+
+    .icon path {
+      fill: $asbestos;
+    }
+  }
+
+  &.candidate {
+    border-color: $seaGreen;
+    background: $lightGreen;
+
+    &:focus {
+      box-shadow: 0 0 1px 2px $paleGreen;
+    }
+
+    .icon path {
+      fill: $seaGreen;
     }
   }
 }
 
 .opened {
-  opacity: 1;
   margin-right: 300px;
+  opacity: 1;
 
   .icon {
-    transform: rotate(90deg);
+    transform: rotate(360deg);
   }
 
   &:hover {

@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useMemo,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import SelectUI from 'react-select';
 import cx from 'classnames';
 
@@ -18,10 +12,10 @@ import { types, BaseField } from '../utils';
 import styles from './Select.module.scss';
 
 export interface SelectProps
-  extends Omit<types.Select, 'type'>,
-    Omit<BaseField, 'onChange'> {
+  extends Omit<types.Select & BaseField, 'type' | 'defaultValue' | 'onChange'> {
   theme: typeof styles;
   onChange(value: string, option: types.Option): void;
+  defaultValue?: string | string[];
 }
 
 export const Select = themr((props: SelectProps) => {
@@ -39,6 +33,7 @@ export const Select = themr((props: SelectProps) => {
     placeholder,
     onChange,
   } = props;
+  console.log(error);
 
   const [{ data, loading }, getList] = useAxios<
     types.Option[] | Record<string, types.Option[]>
@@ -53,6 +48,10 @@ export const Select = themr((props: SelectProps) => {
     }
   );
 
+  const [selected, setSelected] = useState<
+    types.Option | types.Option[] | null | undefined
+  >(multiple ? [] : null);
+
   const fields = useMemo(() => {
     if (data) {
       return (
@@ -63,11 +62,43 @@ export const Select = themr((props: SelectProps) => {
     return props.data || [];
   }, [data, props.data, suggestions?.name]);
 
-  const defaultValue = useRef(
-    fields.find((option) => option.label === props.defaultValue)
-  );
+  const defaultValue = useMemo(() => {
+    if (Array.isArray(props.defaultValue)) {
+      return fields.filter(
+        (o) =>
+          props.defaultValue?.includes(String(o.id)) ||
+          props.defaultValue?.includes(o.value)
+      );
+    }
 
-  const [selected, setSelected] = useState<types.Option | null>();
+    const newValue = fields.find(
+      (o) =>
+        String(o.id) === props.defaultValue || o.label === props.defaultValue
+    );
+
+    if (multiple) {
+      return newValue ? [newValue] : [];
+    }
+
+    return newValue;
+  }, [fields, multiple, props.defaultValue]);
+
+  const defaultValueAccept = useMemo(() => {
+    if (Array.isArray(defaultValue) && Array.isArray(selected)) {
+      return defaultValue.length === selected.length &&
+        defaultValue.every((o) => selected?.some((s) => o.value === s.value))
+        ? undefined
+        : defaultValue.map((d) => d.label).join(', ');
+    }
+
+    if (Array.isArray(defaultValue) || Array.isArray(selected)) {
+      return undefined;
+    }
+
+    return defaultValue?.value === selected?.value
+      ? undefined
+      : defaultValue?.label;
+  }, [defaultValue, selected]);
 
   const handleChange = useCallback(
     (option) => {
@@ -96,15 +127,26 @@ export const Select = themr((props: SelectProps) => {
 
   const onChangeValue = useCallback(() => {
     if (value) {
-      const newSelected = fields.find((option) => option.value === value);
-      setSelected(newSelected);
+      if (multiple) {
+        setSelected(
+          fields.filter(
+            (o) => String(o.id) === String(value) || o.value === value
+          )
+        );
+      } else {
+        setSelected(
+          fields.find(
+            (o) => String(o.id) === String(value) || o.value === value
+          )
+        );
+      }
     } else {
       setSelected(null);
     }
-  }, [value, fields]);
+  }, [value, multiple, fields]);
 
   const onAccept = useCallback(() => {
-    setSelected(defaultValue.current);
+    setSelected(defaultValue);
   }, [defaultValue]);
 
   const dropdown = useMemo(
@@ -113,7 +155,7 @@ export const Select = themr((props: SelectProps) => {
         value={selected}
         theme={themeCallback}
         isLoading={loading}
-        multiple={multiple}
+        isMulti={multiple}
         isDisabled={disabled}
         placeholder={placeholder || `${title}...`}
         className={cx(theme.select, { [styles.error]: error })}
@@ -145,10 +187,13 @@ export const Select = themr((props: SelectProps) => {
     ]
   );
 
-  useEffect(() => {
-    onChangeValue();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  const values = useMemo(
+    () =>
+      Array.isArray(selected)
+        ? selected.map((s) => String(s.id))
+        : String(selected?.id),
+    [selected]
+  );
 
   useEffect(() => {
     if (value) {
@@ -168,21 +213,22 @@ export const Select = themr((props: SelectProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [suggestions]);
 
+  useEffect(() => {
+    onChangeValue();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, loading]);
+
   return (
     <Input
       name={name}
       error={error}
       title={title}
+      value={values}
       required={required}
       disabled={disabled}
       readOnly={readOnly}
       type={types.TypeField.Text}
-      value={selected?.value || ''}
-      defaultValue={
-        defaultValue.current?.label === selected?.label
-          ? undefined
-          : defaultValue.current?.label
-      }
+      defaultValue={defaultValueAccept}
       theme={{
         input: theme.hide,
         title: theme.title,

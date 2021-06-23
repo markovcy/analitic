@@ -9,15 +9,24 @@ import styles from './Field.module.scss';
 
 export type FieldProps = Omit<
   FormFields.types.Field & FormFields.BaseField,
-  'onChange'
+  'onChange' | 'defaultValue'
 > & {
   theme: typeof styles;
-  defaultValue?: string;
+  defaultValue?: string | string[];
   onChange?(value: string, name: string): void;
 };
 
 export const Field = themr((props: FieldProps) => {
-  const { selector, type, value, theme, name, onChange, ...others } = props;
+  const {
+    name,
+    type,
+    value,
+    theme,
+    disabled,
+    selector,
+    onChange,
+    ...others
+  } = props;
 
   const isHidden = type === FormFields.types.TypeField.Hidden;
 
@@ -29,13 +38,21 @@ export const Field = themr((props: FieldProps) => {
   );
 
   const defaultValue = useMemo(() => {
-    if (selector) {
+    if (selector && !disabled) {
+      if (name.endsWith('[]') && type === FormFields.types.TypeField.Select) {
+        const dom = document.querySelectorAll<HTMLInputElement>(selector);
+        return [...dom].map((e) =>
+          (e?.value || e?.src || e?.innerHTML)?.trim()
+        );
+      }
+
       const dom = document.querySelector<HTMLInputElement>(selector);
       return (dom?.value || dom?.src || dom?.innerHTML)?.trim();
     }
 
     return undefined;
-  }, [selector]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selector, disabled]);
 
   const Component = useMemo(() => {
     switch (type) {
@@ -61,9 +78,11 @@ export const Field = themr((props: FieldProps) => {
         return FormFields.DefaultInput;
 
       default:
-        console.error(`This type is not supported [${type}]`);
+        // eslint-disable-next-line no-console
+        console.error(`This type is not supported [${name}:${type}]`);
         return null;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]) as React.FunctionComponent<Omit<FieldProps, 'selector'>>;
 
   if (!Component) {
@@ -76,9 +95,10 @@ export const Field = themr((props: FieldProps) => {
         <Component
           name={name}
           type={type}
-          value={value}
           theme={theme}
-          defaultValue={defaultValue}
+          disabled={disabled}
+          value={value || defaultValue}
+          defaultValue={value ? defaultValue : undefined}
           onChange={handleChange}
           {...others}
         />

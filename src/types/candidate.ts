@@ -19,7 +19,7 @@ export interface Candidate {
   experience: string;
   platforms: number[];
   seniorityId: number;
-  vacancies: number[];
+  vacancies: number[] | null;
   dateFollowUp: string | null;
-  language: 'Intermediate' | string;
+  language: string;
 }

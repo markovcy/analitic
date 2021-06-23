@@ -10,6 +10,7 @@ const TYPES = [
   actions.REMOVE,
   actions.OPEN,
   actions.CLOSE,
+  actions.UPDATE,
 ];
 
 export const generateActionTypes = (base: string): actions.Types => {
@@ -82,6 +83,9 @@ export const generateActions = (base: actions.Types): actions.Actions => {
     }),
     close: callback({
       type: base.CLOSE,
+    }),
+    update: callback({
+      type: base.UPDATE,
     }),
   };
 

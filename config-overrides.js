@@ -33,8 +33,6 @@ module.exports = {
               const viewport = document.body;
               let root = viewport.querySelector('#root');
             
-              console.log('root:', root);
-            
               if (!root) {
                 root = document.createElement('div');
                 root.id = process.env.REACT_APP_ID;

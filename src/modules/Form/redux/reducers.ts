@@ -1,5 +1,5 @@
-import { types } from '@upp/chrome/store';
 import { storage } from '@upp/chrome/utils';
+import { Candidate } from '@upp/chrome/types';
 import { FormFields } from '@upp/chrome/molecules';
 
 import * as actions from './actions';
@@ -7,18 +7,30 @@ import * as actions from './actions';
 interface Form {
   action: string;
   expirationDate: string;
-  fields: FormFields.types.Field[];
+  fields?: FormFields.types.Field[];
+  values?: Candidate;
 }
 
-export type FormsState = Record<'candidate', Form | null>;
+type FormTypes = 'candidate';
+
+export type FormsState = Record<FormTypes, Form | null>;
 
 const initForm: FormsState = {
   candidate: null,
 };
 
+// type Action =
+//   | types.BaseAction<typeof kl, FormsState>
+//   // | types.BaseAction<
+//   //     { key: FormTypes; [k: keyof Form]: string },
+//   //     typeof actions.FORM.UPDATE
+//   //   >
+//   | types.BaseAction<actions.FORM.REMOVE, string>;
+
 export const form = (
   state: FormsState = initForm,
-  { type, payload }: types.BaseAction<FormsState | string>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { type, payload }: any // types.BaseAction<FormsState | string | Record<string, FormsState>>
 ) => {
   switch (type) {
     case actions.FORM.INIT:
@@ -34,6 +46,24 @@ export const form = (
       return newState;
     }
 
+    case actions.FORM.UPDATE: {
+      const { key, ...others } = payload || {};
+
+      if (typeof key === 'string') {
+        const newState = {
+          ...state,
+          [key]: {
+            ...(state[key as FormTypes] || {}),
+            ...others,
+          },
+        };
+
+        return newState;
+      }
+
+      return state;
+    }
+
     case actions.FORM.REMOVE: {
       if (typeof payload !== 'string') {
         return state;
@@ -46,7 +76,7 @@ export const form = (
 
       storage.set(actions.FORM.id, JSON.stringify(newState));
 
-      return null;
+      return newState;
     }
 
     default:

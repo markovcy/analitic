@@ -13,7 +13,7 @@ enum ErrorType {
   DefaultValue,
 }
 
-interface AttachmentProps extends Omit<types.Attachment, 'type'>, BaseField {
+interface AttachmentProps extends Omit<types.Attachment & BaseField, 'type'> {
   theme: typeof styles;
 }
 

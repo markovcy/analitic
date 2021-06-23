@@ -31,6 +31,7 @@ export const FormContainer = themr((props: FormContainerProps) => {
   const handleSubmit = useCallback(
     (formData) => {
       onSubmit?.(formData);
+      console.log(formData);
 
       // if (action) {
       //   sendForm();

@@ -20,7 +20,8 @@ axios.interceptors.response.use(
 
 export const user = (
   state: types.State['user'] = null,
-  { type, payload }: types.BaseAction<types.State['user']>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { type, payload }: any // types.BaseAction<types.State['user']>
 ) => {
   switch (type) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

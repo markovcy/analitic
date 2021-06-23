@@ -13,6 +13,8 @@ interface ButtonProps {
 export const Button = themr((props: ButtonProps) => {
   const { theme } = props;
 
+  const user = useGetState<'user'>('user');
+  const { candidate } = useGetState<'form'>('form');
   const { isOpen } = useGetState<'burgerMenu'>('burgerMenu');
   const toggleMenu = useGetAction<'toggleMenu'>('toggleMenu');
 
@@ -23,7 +25,11 @@ export const Button = themr((props: ButtonProps) => {
   return (
     <button
       type="button"
-      className={cx(theme.button, { [theme.opened]: isOpen })}
+      className={cx(theme.button, {
+        [theme.opened]: isOpen,
+        [theme.notAuth]: !user?.id,
+        [theme.candidate]: Boolean(candidate?.values),
+      })}
       onClick={onChangeNavigationState}
     >
       <Icon name="button-navigation" className={theme.icon} />

@@ -9,12 +9,13 @@ import { types } from '../utils';
 
 import styles from './Input.module.scss';
 
-export interface InputProps extends types.BaseInput {
+export interface InputProps extends Omit<types.BaseInput, 'value'> {
   theme: typeof styles;
   onAccept(value: string): void;
   title?: string;
   error?: string | null;
   defaultValue?: string;
+  value?: string | string[];
   children?: React.ReactNode;
   inputRef?: RefObject<HTMLInputElement>;
   onBlur?(args: unknown): void;
@@ -30,6 +31,7 @@ export const Input = themr((props: InputProps) => {
     error,
     title,
     theme,
+    value,
     inputRef,
     children,
     required,
@@ -43,19 +45,63 @@ export const Input = themr((props: InputProps) => {
 
   const handleChange = useCallback((e) => onChange?.(e), [onChange]);
 
-  const input = useMemo(
-    () => (
+  const input = useMemo(() => {
+    if (Array.isArray(value) && value.length !== 0) {
+      const [first, ...otherValues] = value;
+
+      const inputs = [
+        <input
+          {...otherProps}
+          key={-1}
+          ref={inputRef}
+          name={name}
+          value={first}
+          className={theme.input}
+          placeholder={placeholder || `${title}...`}
+          onChange={handleChange}
+        />,
+      ];
+
+      otherValues?.forEach((v, i) => {
+        inputs.push(
+          <input
+            {...otherProps}
+            // eslint-disable-next-line react/no-array-index-key
+            key={i}
+            value={v}
+            name={name}
+            tabIndex={-1}
+            className={theme.inputHidden}
+            onChange={handleChange}
+          />
+        );
+      });
+
+      return inputs;
+    }
+
+    return (
       <input
         {...otherProps}
         ref={inputRef}
         name={name}
+        value={value}
         className={theme.input}
         placeholder={placeholder || `${title}...`}
         onChange={handleChange}
       />
-    ),
-    [inputRef, name, otherProps, placeholder, title, theme.input, handleChange]
-  );
+    );
+  }, [
+    value,
+    otherProps,
+    inputRef,
+    name,
+    theme.input,
+    theme.inputHidden,
+    placeholder,
+    title,
+    handleChange,
+  ]);
 
   return (
     <label
@@ -80,7 +126,7 @@ export const Input = themr((props: InputProps) => {
       )}
 
       <DefaultValue
-        value={defaultValue === otherProps.value ? undefined : defaultValue}
+        value={defaultValue === value ? undefined : defaultValue}
         onAccept={onAccept}
       />
 

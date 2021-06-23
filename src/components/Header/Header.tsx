@@ -8,12 +8,13 @@ import styles from './Header.module.scss';
 
 export const Header = themr(() => {
   const user = useGetState<'user'>('user');
+  const formActions = useGetAction<'form'>('form');
   const userActions = useGetAction<'user'>('user');
 
   const logout = useCallback(() => {
     userActions.remove();
-  }, [userActions]);
-  console.log(user);
+    formActions.remove('candidate');
+  }, [formActions, userActions]);
 
   return (
     <header className={cx(styles.header, { [styles.withUser]: Boolean(user) })}>
