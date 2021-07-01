@@ -33,7 +33,6 @@ export const Select = themr((props: SelectProps) => {
     placeholder,
     onChange,
   } = props;
-  console.log(error);
 
   const [{ data, loading }, getList] = useAxios<
     types.Option[] | Record<string, types.Option[]>
@@ -50,7 +49,7 @@ export const Select = themr((props: SelectProps) => {
 
   const [selected, setSelected] = useState<
     types.Option | types.Option[] | null | undefined
-  >(multiple ? [] : null);
+  >(multiple ? [] : undefined);
 
   const fields = useMemo(() => {
     if (data) {
@@ -187,13 +186,15 @@ export const Select = themr((props: SelectProps) => {
     ]
   );
 
-  const values = useMemo(
-    () =>
-      Array.isArray(selected)
-        ? selected.map((s) => String(s.id))
-        : String(selected?.id),
-    [selected]
-  );
+  const values = useMemo(() => {
+    if (!selected) {
+      return undefined;
+    }
+
+    return Array.isArray(selected)
+      ? selected.map((s) => String(s.id))
+      : String(selected.id);
+  }, [selected]);
 
   useEffect(() => {
     if (value) {

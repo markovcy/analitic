@@ -18,7 +18,7 @@ export const FormContainer = themr((props: FormContainerProps) => {
     ...others
   } = props;
 
-  const [{ data, loading, error }, sendForm] = useAxios(
+  const [{ loading, error }, sendForm] = useAxios(
     {
       url: action,
       method: 'POST',
@@ -29,13 +29,13 @@ export const FormContainer = themr((props: FormContainerProps) => {
   );
 
   const handleSubmit = useCallback(
-    (formData) => {
-      onSubmit?.(formData);
-      console.log(formData);
+    (data) => {
+      onSubmit?.(data);
+      console.log(data);
 
-      // if (action) {
-      //   sendForm();
-      // }
+      if (action) {
+        sendForm({ data });
+      }
     },
     [action, onSubmit, sendForm]
   );
@@ -44,8 +44,9 @@ export const FormContainer = themr((props: FormContainerProps) => {
     <Form
       {...others}
       action={action}
-      error={error?.message || outerError}
       loading={loading || outerLoading}
+      error={error?.message || outerError}
+      formErrors={error?.response?.data?.formErrors}
       onSubmit={handleSubmit}
     />
   );

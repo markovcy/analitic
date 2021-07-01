@@ -9,6 +9,7 @@ import { storage, useAxios } from '@upp/chrome/utils';
 import { useGetState, useGetAction } from '@upp/chrome/store';
 import { FormContainer, formConstants } from '@upp/chrome/modules';
 import {
+  Icon,
   Spinner,
   NotFound,
   IconsType,
@@ -45,7 +46,7 @@ const OrderFields = [
   'vacancies[]',
   'tag_id',
   'salary',
-  'language',
+  'id_languages',
   'phone',
   'skype',
   'email',
@@ -74,11 +75,11 @@ const ConsistensSelectors: Record<string, string> = {
   cv: '',
   experience: '',
   education: '',
-  language:
+  id_languages:
     '.ember-view .pv-profile-section__section-info.section-info .pv-contact-info__contact-type.ci-email .pv-contact-info__ci-container.t-14 .pv-contact-info__contact-link.t-14.t-black.t-normal',
   file: '',
   avatar:
-    '.display-flex .pv-top-card--photo.text-align-left .pv-top-card__photo-wrapper.ml0 .presence-entity.pv-top-card__image.presence-entity--size-9.ember-view .pv-top-card__photo.presence-entity__image.EntityPhoto-circle-9.lazy-image.ember-view',
+    '.pv-top-card__photo-wrapper .presence-entity .presence-entity__image',
   seniority_id: '',
   date_follow_up: '',
   'vacancies[]': '',
@@ -145,7 +146,7 @@ export const CandidateForm = memo(() => {
       formActions.save({
         candidate: {
           fields,
-          action: data.action,
+          action: data.action.replace('/api', ''),
           expirationDate: addDays(new Date(), 1).toISOString(),
         },
       });
@@ -282,29 +283,42 @@ export const CandidateForm = memo(() => {
     return <NotFound />;
   }
 
+  const hasCandidate = Boolean(form.candidate?.values);
+  const avatar = document.querySelector(
+    '.pv-top-card__photo-wrapper .presence-entity .presence-entity__image'
+  ) as HTMLImageElement;
+
   return (
     <div>
-      {candidate.data?.crmUrl && (
-        <a
-          target="_blank"
-          rel="noreferrer"
-          className={styles.link}
-          href={candidate.data?.crmUrl}
-        >
-          Open {candidate.data?.data.name}
-        </a>
-      )}
+      <div className={styles.candidate}>
+        {avatar && (
+          <div className={styles.avatar}>
+            <img src={avatar.src} alt="avatar" />
+          </div>
+        )}
+        {candidate.data?.crmUrl && (
+          <div className={styles.saved}>
+            <Icon name="check" />
+            presented in database
+            <a
+              target="_blank"
+              rel="noreferrer"
+              className={styles.link}
+              href={candidate.data?.crmUrl}
+            >
+              Show
+            </a>
+          </div>
+        )}
+      </div>
 
       <FormContainer
         data={fields}
         loading={candidate.loading}
         theme={{ form: styles.form }}
         action={form.candidate?.action}
-        titleSubmitButton={
-          form.candidate?.values
-            ? 'Update (do not work)'
-            : 'Create (do not work)'
-        }
+        disabledSubmitButton={hasCandidate}
+        titleSubmitButton={hasCandidate ? 'Update' : 'Create'}
       />
     </div>
   );

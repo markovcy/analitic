@@ -3,13 +3,13 @@
 @import '@upp/chrome/styles/mixins';
 
 .icon {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
 
   @include transition();
 
   path {
-    fill: $crimson;
+    // fill: $crimson;
   }
 }
 
@@ -21,17 +21,17 @@
   padding: 16px 308px 16px 16px;
   opacity: 0.75;
   cursor: pointer;
-  border: 1px solid $darkRed;
+  border: 1px solid $brand-main;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
-  background: $white;
+  background: $brand-main;
   z-index: 9998;
 
   @include transition(all, 0.5s);
   @include animate(fadeInLeft, 1s);
 
   &:focus {
-    box-shadow: 0 0 1px 2px $coral;
+    box-shadow: 0 0 1px 2px $skyBlue;
   }
 
   &:hover {
@@ -42,35 +42,37 @@
     }
   }
 
-  &.notAuth {
-    border-color: $asbestos;
-    background: $lightGray;
+  &.notSaved {
+    border-color: $brand-main;
+    background: $brand-main;
+
+    &:focus {
+      box-shadow: 0 0 1px 2px $skyBlue;
+    }
+
+    .icon circle,
+    .icon path {
+      stroke: $brand-success;
+    }
+  }
+
+  &.candidate {
+    border-color: $brand-main;
+    background: $brand-main;
 
     &:focus {
       box-shadow: 0 0 1px 2px $concrete;
     }
 
+    .icon circle,
     .icon path {
-      fill: $asbestos;
-    }
-  }
-
-  &.candidate {
-    border-color: $seaGreen;
-    background: $lightGreen;
-
-    &:focus {
-      box-shadow: 0 0 1px 2px $paleGreen;
-    }
-
-    .icon path {
-      fill: $seaGreen;
+      stroke: $brand-error;
     }
   }
 }
 
 .opened {
-  margin-right: 300px;
+  margin-right: 410px;
   opacity: 1;
 
   .icon {
@@ -82,7 +84,7 @@
     border-color: $concrete;
 
     .icon {
-      transform: rotate(90deg);
+      transform: rotate(360deg);
     }
   }
 }

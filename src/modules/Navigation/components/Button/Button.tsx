@@ -27,12 +27,12 @@ export const Button = themr((props: ButtonProps) => {
       type="button"
       className={cx(theme.button, {
         [theme.opened]: isOpen,
-        [theme.notAuth]: !user?.id,
-        [theme.candidate]: Boolean(candidate?.values),
+        [theme.notSaved]: Boolean(!candidate?.values && user?.id),
+        [theme.candidate]: Boolean(candidate?.values && user?.id),
       })}
       onClick={onChangeNavigationState}
     >
-      <Icon name="button-navigation" className={theme.icon} />
+      <Icon name="logo" className={theme.icon} />
     </button>
   );
 }, styles);

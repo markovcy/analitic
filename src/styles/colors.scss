@@ -2,6 +2,11 @@
 $white: #fff;
 $black: #000;
 $theme: #000;
+$brand-main: #0D2F3E;
+$brand-accent: rgba(27, 168, 229, 0.8);
+$brand-error: #FF3B30;
+$brand-success: #09DD5E;
+$brand-base: rgba(27, 168, 229, 0.16);
 
 // navy blue
 $gainsBoro: rgb(101, 113, 135); // #657187
@@ -93,4 +98,5 @@ $darkGray: rgb(126, 137, 156); // #7e899c
   white: $white;
   black: $black;
 }
+
 /* stylelint-enable property-case */

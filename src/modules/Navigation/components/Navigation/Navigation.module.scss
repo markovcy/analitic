@@ -16,7 +16,7 @@
   box-sizing: border-box;
   z-index: 2;
 
-  & > div {
+  &>div {
     flex: 1 auto;
   }
 
@@ -31,7 +31,8 @@
   display: flex !important;
   flex-direction: column;
   height: 100vh !important;
-  padding: 28px 20px 20px;
+  width: 400px !important;
+  padding: 28px 20px 20px 65px;
   overflow: auto;
   background: $white;
   box-shadow: 0 0 4px -1px $darkGray;
@@ -54,7 +55,7 @@
 }
 
 .crossButton {
-  left: 8px !important;
+  left: 50px !important;
   display: flex;
   align-items: center;
   justify-content: center;

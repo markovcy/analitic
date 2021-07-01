@@ -46,7 +46,11 @@ export const Input = themr((props: InputProps) => {
   const handleChange = useCallback((e) => onChange?.(e), [onChange]);
 
   const input = useMemo(() => {
-    if (Array.isArray(value) && value.length !== 0) {
+    if (value === undefined || (Array.isArray(value) && value.length === 0)) {
+      return null;
+    }
+
+    if (Array.isArray(value)) {
       const [first, ...otherValues] = value;
 
       const inputs = [

@@ -9,13 +9,15 @@ import styles from './Form.module.scss';
 export interface FormProps {
   theme: typeof styles;
   data: FormFields.types.Field[];
-  onSubmit(args: Record<string, string>): void;
+  onSubmit(args: Record<string, string | string[]>): void;
   error?: string;
   title?: string;
   action?: string;
   loading?: boolean;
   description?: string;
   titleSubmitButton?: string;
+  disabledSubmitButton?: boolean;
+  formErrors?: Record<string, string>;
 }
 
 export const Form = themr((props: FormProps) => {
@@ -26,7 +28,9 @@ export const Form = themr((props: FormProps) => {
     error,
     action,
     loading,
+    formErrors,
     description,
+    disabledSubmitButton,
     titleSubmitButton = 'Submit',
     onSubmit,
   } = props;
@@ -40,7 +44,7 @@ export const Form = themr((props: FormProps) => {
       setErrors({});
 
       const errors: Record<string, string> = {};
-      const allData: Record<string, string> = {};
+      const allData: Record<string, string | string[]> = {};
       const formData = new FormData(
         (form.current || e?.target) as HTMLFormElement
       );
@@ -60,7 +64,18 @@ export const Form = themr((props: FormProps) => {
           continue;
         }
 
-        const value = (values.length === 1 ? values[0] : values) as string;
+        const value = (!name.includes('[]') && values.length === 1
+          ? values[0]
+          : values.filter(Boolean)) as string | string[];
+
+        if (
+          (Array.isArray(value) || typeof value === 'string') &&
+          value.length === 0
+        ) {
+          // eslint-disable-next-line no-continue
+          continue;
+        }
+
         allData[name] = value;
       }
 
@@ -113,7 +128,7 @@ export const Form = themr((props: FormProps) => {
             key={f.name}
             {...f}
             disabled={loading || f.disabled}
-            error={errors[f.name]}
+            error={errors[f.name] || formErrors?.[f.name]}
             onChange={onChangeField}
           />
         ))}
@@ -124,10 +139,10 @@ export const Form = themr((props: FormProps) => {
       {error && <p className={theme.error}>{error}</p>}
 
       <Button
-        disabled={loading || hasError}
         theme={{ button: theme.button }}
         type={hasError ? 'danger' : 'primary'}
         leftIcon={loading ? spinner : undefined}
+        disabled={loading || hasError || disabledSubmitButton}
         onClick={handleSubmit}
       >
         {titleSubmitButton}

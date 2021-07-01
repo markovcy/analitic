@@ -1,8 +1,10 @@
+
 ####################################
 # Build command for Chrome Extension
 ####################################
 
 .PHONY: help build
+
 
 help:
 	$(info ${HELP_MESSAGE})
