@@ -4,6 +4,7 @@ import cx from 'classnames';
 
 import { themr } from '@upp/chrome/components';
 
+import { Hidden } from '../Hidden';
 import { types, BaseField } from '../utils';
 import { Title, Error, DefaultValue } from '../Additional';
 
@@ -24,25 +25,34 @@ export const Phone = themr((props: PhoneProps) => {
     error,
     required,
     defaultValue,
+    onBlur,
     onChange,
     ...others
   } = props;
 
   const [phone, setPhone] = useState<string>(value || '');
+  const [countryCode, setCountryCode] = useState<string>();
 
   const inputProps = useMemo(
     () => ({
       required,
-      name,
       readOnly,
       disabled,
+      name:
+        countryCode &&
+        countryCode.length < phone.length &&
+        phone.replace(countryCode, '').length !== 0
+          ? name
+          : undefined,
     }),
-    [disabled, name, readOnly, required]
+    [countryCode, disabled, name, phone, readOnly, required]
   );
 
   const onChangePhone = useCallback(
-    (newPhone: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (newPhone: string, data?: any) => {
       setPhone(newPhone);
+      setCountryCode(data?.dialCode);
       onChange?.(newPhone);
     },
     [onChange]
@@ -87,6 +97,7 @@ export const Phone = themr((props: PhoneProps) => {
         onAccept={onChangePhone}
       />
 
+      <Hidden name={name} value={phone} />
       <Error theme={{ error: theme.error }} error={error} />
     </label>
   );

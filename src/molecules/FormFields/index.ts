@@ -1,5 +1,6 @@
 export * from './Additional';
 export * from './Attachment';
+export * from './Date';
 export * from './DefaultInput';
 export * from './Hidden';
 export * from './Input';

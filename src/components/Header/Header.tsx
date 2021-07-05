@@ -27,18 +27,6 @@ export const Header = themr(() => {
         name="logo"
         theme={{ icon: cx(styles.logo, { [styles.withUser]: Boolean(user) }) }}
       /> */}
-
-      <div className={styles.side} />
-      <div className={styles.tabs}>
-        <div className={cx(styles.formTab, { [styles.active]: Boolean(user) })}>
-          <Icon name="candidate" />
-        </div>
-        <div
-          className={cx(styles.formTab, { [styles.active]: Boolean(!user) })}
-        >
-          <Icon name="settings" />
-        </div>
-      </div>
     </header>
   );
 }, styles);

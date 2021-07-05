@@ -2,6 +2,7 @@ import { IconsType } from '@upp/chrome/components';
 
 export enum TypeField {
   Tel = 'tel',
+  Date = 'date', // need to realization
   Text = 'text',
   Email = 'email',
   Hidden = 'hidden',
@@ -29,6 +30,7 @@ export interface BaseInput<T = TypeField> {
 
 type BaseText = {
   pattern?: string;
+  minLength?: number;
   maxLength?: number;
 };
 
@@ -40,7 +42,12 @@ export type Attachment = BaseField<TypeField.Attachment>;
 export type TextArea = BaseField<TypeField.Textarea> & BaseText;
 
 export type DefaultField<
-  T = TypeField.Text | TypeField.Email | TypeField.Password | TypeField.Number
+  T =
+    | TypeField.Text
+    | TypeField.Email
+    | TypeField.Password
+    | TypeField.Number
+    | TypeField.Date
 > = BaseField<T> &
   BaseText & {
     iconName?: IconsType;

@@ -18,6 +18,7 @@ export interface FormProps {
   titleSubmitButton?: string;
   disabledSubmitButton?: boolean;
   formErrors?: Record<string, string>;
+  onChange?(value: string, name: string): void;
 }
 
 export const Form = themr((props: FormProps) => {
@@ -33,6 +34,7 @@ export const Form = themr((props: FormProps) => {
     disabledSubmitButton,
     titleSubmitButton = 'Submit',
     onSubmit,
+    onChange,
   } = props;
 
   const form = useRef<HTMLFormElement>(null);
@@ -43,23 +45,67 @@ export const Form = themr((props: FormProps) => {
       e?.preventDefault();
       setErrors({});
 
-      const errors: Record<string, string> = {};
+      const newErrors: Record<string, string> = {};
       const allData: Record<string, string | string[]> = {};
       const formData = new FormData(
         (form.current || e?.target) as HTMLFormElement
       );
 
-      const names = [...new Set(formData.keys())];
+      const names = data.map((f) => f.name);
 
       for (const name of names) {
         const field = data.find((f) => f.name === name);
         const values = formData.getAll(name);
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const { pattern, required, minLength } = field || {};
+
         // validate fields
-        const isError = field?.required && values.every((v) => !v);
+        let isError = values.some((v) => {
+          if (v instanceof File) {
+            if (!required || v.name) {
+              return false;
+            }
+
+            newErrors[name] = 'Field is required';
+            return true;
+          }
+
+          if (required && typeof v === 'string' && v.length === 0) {
+            newErrors[name] = 'Field is required';
+            return true;
+          }
+
+          if (minLength && (!value || value.length < minLength)) {
+            newErrors[name] = `Min length field is ${minLength}`;
+
+            return true;
+          }
+
+          if (
+            pattern &&
+            v.length !== 0 &&
+            !new RegExp(pattern.replace(/\\\\/g, '\\')).test(v)
+          ) {
+            newErrors[name] = `See pattern: /${pattern}/`;
+            return true;
+          }
+
+          return false;
+        });
+
+        if (
+          !isError &&
+          required &&
+          Array.isArray(values) &&
+          values.length === 0
+        ) {
+          isError = true;
+          newErrors[name] = 'Field is required';
+        }
 
         if (isError) {
-          errors[name] = 'Field is required';
           // eslint-disable-next-line no-continue
           continue;
         }
@@ -76,11 +122,13 @@ export const Form = themr((props: FormProps) => {
           continue;
         }
 
-        allData[name] = value;
+        allData[name] = Array.isArray(value)
+          ? value.map((v) => v.trim())
+          : value.trim();
       }
 
-      if (Object.values(errors).length !== 0) {
-        setErrors(errors);
+      if (Object.values(newErrors).length !== 0) {
+        setErrors(newErrors);
         return;
       }
 
@@ -94,6 +142,7 @@ export const Form = themr((props: FormProps) => {
       ...e,
       [name]: null,
     }));
+    onChange?.(v, name);
   }, []);
 
   const spinner = useMemo(
@@ -127,7 +176,7 @@ export const Form = themr((props: FormProps) => {
           <Field
             key={f.name}
             {...f}
-            disabled={loading || f.disabled}
+            disabled={loading || f.disabled || f.readOnly}
             error={errors[f.name] || formErrors?.[f.name]}
             onChange={onChangeField}
           />

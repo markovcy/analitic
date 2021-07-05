@@ -29,13 +29,12 @@ export const FormContainer = themr((props: FormContainerProps) => {
   );
 
   const handleSubmit = useCallback(
-    (data) => {
-      onSubmit?.(data);
-      console.log(data);
-
+    async (data) => {
       if (action) {
-        sendForm({ data });
+        await sendForm({ data });
       }
+
+      onSubmit?.(data);
     },
     [action, onSubmit, sendForm]
   );

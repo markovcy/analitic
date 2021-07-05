@@ -5,6 +5,8 @@ import { themr, ErrorBoundary } from '@upp/chrome/components';
 
 import { FormFields } from '@upp/chrome/molecules';
 
+import { GET_PATH_BY_SELECTOR } from '../../utils';
+
 import styles from './Field.module.scss';
 
 export type FieldProps = Omit<
@@ -46,6 +48,10 @@ export const Field = themr((props: FieldProps) => {
         );
       }
 
+      if (selector === GET_PATH_BY_SELECTOR) {
+        return window.location.href;
+      }
+
       const dom = document.querySelector<HTMLInputElement>(selector);
       return (dom?.value || dom?.src || dom?.innerHTML)?.trim();
     }
@@ -70,6 +76,9 @@ export const Field = themr((props: FieldProps) => {
 
       case FormFields.types.TypeField.Select:
         return FormFields.Select;
+
+      case FormFields.types.TypeField.Date:
+        return FormFields.Date;
 
       case FormFields.types.TypeField.Email:
       case FormFields.types.TypeField.Number:

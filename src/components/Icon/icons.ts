@@ -10,6 +10,7 @@ import { ReactComponent as skype } from './assets/skype.svg';
 import { ReactComponent as logout } from './assets/logout.svg';
 import { ReactComponent as salary } from './assets/salary.svg';
 import { ReactComponent as noPhoto } from './assets/no-photo.svg';
+import { ReactComponent as calendar } from './assets/calendar.svg';
 import { ReactComponent as linkedin } from './assets/linkedin.svg';
 import { ReactComponent as error404 } from './assets/error-404.svg';
 import { ReactComponent as settings } from './assets/settings_icn.svg';
@@ -29,6 +30,7 @@ export type IconsType =
   | 'check'
   | 'logout'
   | 'salary'
+  | 'calendar'
   | 'linkedin'
   | 'no-photo'
   | 'settings'
@@ -53,6 +55,7 @@ export const icons: Icons = {
   logout,
   check,
   salary,
+  calendar,
   linkedin,
   settings,
   candidate,

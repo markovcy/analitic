@@ -11,7 +11,7 @@ import {
   ErrorBoundary,
 } from '@upp/chrome/components';
 
-import { useGetAction } from '@upp/chrome/store';
+import { useGetState } from '@upp/chrome/store';
 
 import styles from './Navigation.module.scss';
 
@@ -26,7 +26,7 @@ const Menu = reduxBurgerMenu(slide);
 export const Navigation = themr((props: NavigationProps) => {
   const { theme, isOpen, children } = props;
 
-  const userActions = useGetAction<'user'>('user');
+  const user = useGetState<'user'>('user');
 
   return (
     <Menu
@@ -38,11 +38,24 @@ export const Navigation = themr((props: NavigationProps) => {
       className={cx(theme.menu, { [theme.open]: isOpen })}
       customCrossIcon={<Icon name="close" className={theme.closeIcon} />}
     >
-      <Header />
-      <ErrorBoundary>
-        <main>{children}</main>
-      </ErrorBoundary>
-      <Footer />
+      <nav className={theme.nav}>
+        <ul className={theme.tabs}>
+          <li className={cx(theme.formTab, { [theme.active]: Boolean(user) })}>
+            <Icon name="candidate" />
+          </li>
+          <li className={cx(theme.formTab, { [theme.active]: Boolean(!user) })}>
+            <Icon name="settings" />
+          </li>
+        </ul>
+      </nav>
+
+      <div className={theme.content}>
+        <Header />
+        <ErrorBoundary>
+          <main>{children}</main>
+        </ErrorBoundary>
+        <Footer />
+      </div>
     </Menu>
   );
 }, styles);

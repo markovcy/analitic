@@ -17,7 +17,6 @@
     "webNavigation", 
     "https://localhost/*",
     "https://161.97.144.240/*", 
-    "http://antonmlz.beget.tech/*",
     "https://www.linkedin.com/in/*/*"
   ],
   "content_scripts": [{
@@ -27,7 +26,8 @@
     "js": ["/static/js/main.js"]
   }],
   "background": {
-    "scripts": ["/static/js/main.js"]
+    "scripts": ["/static/js/main.js"],
+    "persistent": false
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "start_url": ".",

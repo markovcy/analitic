@@ -14,7 +14,11 @@ import styles from './Select.module.scss';
 export interface SelectProps
   extends Omit<types.Select & BaseField, 'type' | 'defaultValue' | 'onChange'> {
   theme: typeof styles;
-  onChange(value: string, option: types.Option): void;
+  onChange(
+    value: undefined | number | number[],
+    name: string,
+    option?: types.Option | types.Option[] | null
+  ): void;
   defaultValue?: string | string[];
 }
 
@@ -99,13 +103,9 @@ export const Select = themr((props: SelectProps) => {
       : defaultValue?.label;
   }, [defaultValue, selected]);
 
-  const handleChange = useCallback(
-    (option) => {
-      setSelected(option);
-      onChange?.(option?.value, option);
-    },
-    [onChange]
-  );
+  const handleChange = useCallback((option) => {
+    setSelected(option);
+  }, []);
 
   const themeCallback = useCallback(
     (selectThemes) => ({
@@ -218,6 +218,15 @@ export const Select = themr((props: SelectProps) => {
     onChangeValue();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, loading]);
+
+  useEffect(() => {
+    onChange?.(
+      Array.isArray(selected) ? selected.map((o) => o.id) : selected?.id,
+      name,
+      selected
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
 
   return (
     <Input

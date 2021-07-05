@@ -1,5 +1,5 @@
-import React, { memo, useMemo, useEffect, useCallback } from 'react';
-import { addDays, differenceInSeconds } from 'date-fns';
+import React, { memo, useMemo, useState, useEffect, useCallback } from 'react';
+import { addDays, differenceInSeconds, format } from 'date-fns';
 import { useLocation } from 'react-router-dom';
 import { camelCase } from 'lodash';
 
@@ -7,7 +7,7 @@ import * as types from '@upp/chrome/types';
 import { FormFields } from '@upp/chrome/molecules';
 import { storage, useAxios } from '@upp/chrome/utils';
 import { useGetState, useGetAction } from '@upp/chrome/store';
-import { FormContainer, formConstants } from '@upp/chrome/modules';
+import { FormContainer, formConstants, FormUtils } from '@upp/chrome/modules';
 import {
   Icon,
   Spinner,
@@ -26,6 +26,9 @@ type FormData = {
 interface Candidate {
   crmUrl: string;
   status: string;
+  // eslint-disable-next-line camelcase
+  reqruter_id: string | number;
+  date: string;
   data: types.Candidate;
 }
 
@@ -41,6 +44,8 @@ const ConsistensIcons: Record<string, IconsType> = {
 const OrderFields = [
   'avatar',
   'name',
+  // 'recruter_id',
+  // 'date_follow_up',
   'platforms[]',
   'seniority_id',
   'vacancies[]',
@@ -65,7 +70,7 @@ const ConsistensSelectors: Record<string, string> = {
   skype:
     '.pv-profile-section__section-info.section-info .pv-contact-info__contact-type.ci-ims .list-style-none .pv-contact-info__ci-container.t-14 .pv-contact-info__contact-item.t-14.t-black.t-normal',
   link: '',
-  linkedin: '',
+  linkedin: FormUtils.GET_PATH_BY_SELECTOR,
   status: '',
   tag_id: '',
   comments:
@@ -87,10 +92,17 @@ const ConsistensSelectors: Record<string, string> = {
     '.ph5.pb5 .display-flex.mt2 .flex-1.mr5  .mt1.t-18.t-black.t-normal.break-words',
 };
 
+type OptionsForSelects<T = unknown> = Record<
+  string,
+  (FormFields.types.Option & T)[]
+>;
+
 // TODO: need to optimization on server
 const SUFFIX_URL = 'https://www.linkedin.com/in';
 
 const SUFFIX_PATHNAME = '/in/';
+const vacanciesSelectsUrl = '/get_recruiter_vacancies';
+const returnOptionsForSelectsUrl = '/main/returnOptionsForSelects';
 
 export const CandidateForm = memo(() => {
   const form = useGetState<'form'>('form');
@@ -98,6 +110,13 @@ export const CandidateForm = memo(() => {
   const toggleMenu = useGetAction<'toggleMenu'>('toggleMenu');
 
   const location = useLocation();
+
+  const [selectedPlatform, setSelectedPlatform] = useState<number[]>([]);
+
+  const [selectAxios] = useAxios<OptionsForSelects>(returnOptionsForSelectsUrl);
+  const [vacanciesAxios] = useAxios<OptionsForSelects<{ platformId: number }>>(
+    vacanciesSelectsUrl
+  );
 
   const [formAxios, getForm] = useAxios<FormData>(
     {
@@ -114,6 +133,12 @@ export const CandidateForm = memo(() => {
     },
     { manual: true }
   );
+
+  const onChangeField = useCallback((value, name) => {
+    if (name === 'platforms[]') {
+      setSelectedPlatform(value);
+    }
+  }, []);
 
   const onGetForm = useCallback(async () => {
     try {
@@ -223,15 +248,36 @@ export const CandidateForm = memo(() => {
       (fieldsForm &&
         (OrderFields.map((n) => fieldsForm.find((f) => f.name === n)).filter(
           Boolean
-        ) as FormFields.types.Field[]).map((f) => {
+        ) as FormFields.types.Field[]).map((field) => {
+          const f = { ...field };
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           const value = data[f.name] || data[camelCase(f.name)];
 
           f.value = value;
 
+          if (
+            f.type === FormFields.types.TypeField.Select &&
+            f.suggestions &&
+            f.suggestions?.name &&
+            [vacanciesSelectsUrl, returnOptionsForSelectsUrl].includes(
+              f.suggestions.url
+            )
+          ) {
+            f.data = selectAxios.data?.[f.suggestions.name] || [];
+
+            if (f.name === 'vacancies[]') {
+              f.data = (
+                vacanciesAxios.data?.[f.suggestions.name] || []
+              ).filter((o) => selectedPlatform?.includes(o.platformId));
+            }
+
+            f.suggestions = undefined;
+          }
+
           if (ConsistensSelectors[f.name]) {
             f.selector = f.selector || ConsistensSelectors[f.name];
+            // console.log(f.selector);
           }
 
           return f;
@@ -239,7 +285,37 @@ export const CandidateForm = memo(() => {
       []
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.candidate?.fields, form.candidate?.values, aliasCandidate]);
+  }, [
+    aliasCandidate,
+    selectedPlatform,
+    selectAxios.data,
+    vacanciesAxios.data,
+    form.candidate?.fields,
+    form.candidate?.values,
+  ]);
+
+  const recruiter = useMemo(
+    () =>
+      form.candidate?.values &&
+      selectAxios.data?.recruiters.find(
+        (r) => r.id === form.candidate?.values?.recruterId
+      ),
+    [form.candidate?.values, selectAxios.data?.recruiters]
+  );
+
+  const dateCreated = useMemo(() => {
+    const date = form.candidate?.values?.date;
+
+    if (!date) {
+      return undefined;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return isNaN(Date.parse(date))
+      ? undefined
+      : format(new Date(date), 'dd MMM yyyy');
+  }, [form.candidate?.values?.date]);
 
   useEffect(() => {
     onGetCandidate();
@@ -275,7 +351,7 @@ export const CandidateForm = memo(() => {
     );
   }
 
-  if (formAxios.loading) {
+  if (formAxios.loading || selectAxios.loading || vacanciesAxios.loading) {
     return <Spinner theme={{ circle: styles.spinner }} />;
   }
 
@@ -296,18 +372,35 @@ export const CandidateForm = memo(() => {
             <img src={avatar.src} alt="avatar" />
           </div>
         )}
-        {candidate.data?.crmUrl && (
-          <div className={styles.saved}>
-            <Icon name="check" />
-            presented in database
-            <a
-              target="_blank"
-              rel="noreferrer"
-              className={styles.link}
-              href={candidate.data?.crmUrl}
-            >
-              Show
-            </a>
+
+        {candidate.data?.crmUrl ? (
+          <div className={styles.infoField}>
+            <div className={styles.linkContainer}>
+              <Icon name="check" />
+              presented in database
+              <a
+                target="_blank"
+                rel="noreferrer"
+                className={styles.link}
+                href={candidate.data?.crmUrl}
+              >
+                Show
+              </a>
+            </div>
+            {recruiter && (
+              <div className={styles.text}>
+                Reqruiter name: {recruiter.label}
+              </div>
+            )}
+
+            {dateCreated && (
+              <div className={styles.text}> Date modified: {dateCreated}</div>
+            )}
+          </div>
+        ) : (
+          <div className={styles.linkContainer}>
+            <Icon name="error" theme={{ icon: styles.notCandidateIcon }} />
+            Not in database
           </div>
         )}
       </div>
@@ -319,6 +412,8 @@ export const CandidateForm = memo(() => {
         action={form.candidate?.action}
         disabledSubmitButton={hasCandidate}
         titleSubmitButton={hasCandidate ? 'Update' : 'Create'}
+        onChange={onChangeField}
+        onSubmit={onGetCandidate}
       />
     </div>
   );
