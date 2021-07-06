@@ -14,6 +14,7 @@
 .infoField {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .text {
@@ -39,6 +40,25 @@
       height: 100%;
       border-radius: 10px;
     }
+  }
+}
+
+.btn {
+  margin: 5px;
+  width: 100px;
+  height: auto;
+  padding: 3px 5px;
+  border: 1px solid $lightBlue;
+  border-radius: 5px;
+  background-color: $lightBlue;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:hover {
+    color: $dodgeBlue;
+    cursor: pointer;
   }
 }
 

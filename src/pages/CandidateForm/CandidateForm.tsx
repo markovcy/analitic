@@ -26,6 +26,7 @@ type FormData = {
 interface Candidate {
   crmUrl: string;
   status: string;
+  id: number;
   // eslint-disable-next-line camelcase
   reqruter_id: string | number;
   date: string;
@@ -49,13 +50,32 @@ const OrderFields = [
   'platforms[]',
   'seniority_id',
   'vacancies[]',
-  'tag_id',
+  // 'tag_id',
   'salary',
   'id_languages',
   'phone',
   'skype',
   'email',
   'linkedin',
+  'cv',
+  'comments',
+];
+
+const OrderEditFields = [
+  'avatar',
+  'name',
+  // 'recruter_id',
+  // 'date_follow_up',
+  'platforms[]',
+  'seniority_id',
+  'vacancies[]',
+  'tag_id',
+  'salary',
+  'id_languages',
+  'phone',
+  'skype',
+  'email',
+  // 'linkedin',
   'cv',
   'comments',
 ];
@@ -106,6 +126,7 @@ const returnOptionsForSelectsUrl = '/main/returnOptionsForSelects';
 
 export const CandidateForm = memo(() => {
   const form = useGetState<'form'>('form');
+  const user = useGetState<'user'>('user');
   const formActions = useGetAction<'form'>('form');
   const toggleMenu = useGetAction<'toggleMenu'>('toggleMenu');
 
@@ -130,6 +151,13 @@ export const CandidateForm = memo(() => {
     {
       method: 'POST',
       url: '/get_candidate_info',
+    },
+    { manual: true }
+  );
+  const [reqruter, recontact] = useAxios<Candidate>(
+    {
+      method: 'POST',
+      url: '/main/reContactCandidate/',
     },
     { manual: true }
   );
@@ -244,11 +272,19 @@ export const CandidateForm = memo(() => {
     const data = form.candidate?.values || {};
     const fieldsForm = form.candidate?.fields;
 
+    const formOrder =
+      Object.keys(data).length > 0 ? OrderEditFields : OrderFields;
+
+    const optionsForSelects = {
+      ...selectAxios.data,
+      tags: selectAxios?.data?.tags.concat(selectAxios?.data?.rejectReasons),
+    } as OptionsForSelects;
+
     return (
       (fieldsForm &&
-        (OrderFields.map((n) => fieldsForm.find((f) => f.name === n)).filter(
-          Boolean
-        ) as FormFields.types.Field[]).map((field) => {
+        (formOrder
+          .map((n) => fieldsForm.find((f) => f.name === n))
+          .filter(Boolean) as FormFields.types.Field[]).map((field) => {
           const f = { ...field };
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -264,7 +300,7 @@ export const CandidateForm = memo(() => {
               f.suggestions.url
             )
           ) {
-            f.data = selectAxios.data?.[f.suggestions.name] || [];
+            f.data = optionsForSelects[f.suggestions.name] || [];
 
             if (f.name === 'vacancies[]') {
               f.data = (
@@ -364,6 +400,14 @@ export const CandidateForm = memo(() => {
     '.pv-top-card__photo-wrapper .presence-entity .presence-entity__image'
   ) as HTMLImageElement;
 
+  const onRecontact = () => {
+    recontact({
+      data: {
+        id: candidate?.data?.data?.id,
+      },
+    });
+  };
+
   return (
     <div>
       <div className={styles.candidate}>
@@ -395,6 +439,13 @@ export const CandidateForm = memo(() => {
 
             {dateCreated && (
               <div className={styles.text}> Date modified: {dateCreated}</div>
+            )}
+
+            <button className={styles.btn} type="button" onClick={onRecontact}>
+              Recontact
+            </button>
+            {candidate?.data?.data?.id && reqruter.error && (
+              <p>{String(reqruter.error)}</p>
             )}
           </div>
         ) : (

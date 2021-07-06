@@ -89,6 +89,7 @@ export const Input = themr((props: InputProps) => {
         {...otherProps}
         ref={inputRef}
         name={name}
+        readOnly={name === 'linkedin'}
         value={value}
         className={theme.input}
         placeholder={placeholder || `${title}...`}

@@ -31,6 +31,8 @@ export const FormContainer = themr((props: FormContainerProps) => {
   const handleSubmit = useCallback(
     async (data) => {
       if (action) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         await sendForm({ data });
       }
 
