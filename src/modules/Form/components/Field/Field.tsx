@@ -15,6 +15,7 @@ export type FieldProps = Omit<
 > & {
   theme: typeof styles;
   defaultValue?: string | string[];
+  pattern?: string;
   onChange?(value: string, name: string): void;
 };
 
@@ -25,6 +26,7 @@ export const Field = themr((props: FieldProps) => {
     value,
     theme,
     disabled,
+    pattern,
     selector,
     onChange,
     ...others

@@ -59,7 +59,7 @@ export const Form = themr((props: FormProps) => {
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const { pattern, required, minLength } = field || {};
+        const { pattern, required, minLength, isValid } = field || {};
 
         // validate fields
         let isError = values.some((v) => {
@@ -68,19 +68,23 @@ export const Form = themr((props: FormProps) => {
               return false;
             }
 
-            newErrors[name] = 'Field is required';
+            newErrors[name] = `${name} is required`;
             return true;
           }
 
           if (required && typeof v === 'string' && v.length === 0) {
-            newErrors[name] = 'Field is required';
+            newErrors[name] = `${name} is required`;
             return true;
           }
 
           if (minLength && (!value || value.length < minLength)) {
-            newErrors[name] = `Min length field is ${minLength}`;
+            newErrors[name] = `Min length ${name} is ${minLength}`;
 
             return true;
+          }
+
+          if (isValid && isValid(v)) {
+            return false;
           }
 
           if (
@@ -88,7 +92,7 @@ export const Form = themr((props: FormProps) => {
             v.length !== 0 &&
             !new RegExp(pattern.replace(/\\\\/g, '\\')).test(v)
           ) {
-            newErrors[name] = `See pattern: /${pattern}/`;
+            newErrors[name] = `"${v}" wrong to: /${pattern}/`;
             return true;
           }
 
@@ -102,7 +106,7 @@ export const Form = themr((props: FormProps) => {
           values.length === 0
         ) {
           isError = true;
-          newErrors[name] = 'Field is required';
+          newErrors[name] = `${name} is required`;
         }
 
         if (isError) {

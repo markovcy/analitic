@@ -12,6 +12,7 @@ import styles from './Phone.module.scss';
 
 interface PhoneProps extends Omit<types.Tel, 'type'>, BaseField {
   theme: typeof styles;
+  pattern?: string;
 }
 
 export const Phone = themr((props: PhoneProps) => {
@@ -22,6 +23,7 @@ export const Phone = themr((props: PhoneProps) => {
     disabled,
     theme,
     title,
+    pattern,
     error,
     required,
     defaultValue,
@@ -69,6 +71,8 @@ export const Phone = themr((props: PhoneProps) => {
     setPhone(value || '');
   }, [value]);
 
+  const regPattern = pattern && new RegExp(pattern.replace(/\\\\/g, '\\'));
+
   return (
     <label className={styles.phone}>
       <Title title={title} required={required} />
@@ -77,6 +81,12 @@ export const Phone = themr((props: PhoneProps) => {
         prefix="+"
         country="ua"
         value={phone}
+        isValid={(value, country) => {
+          if (regPattern && !regPattern.test(value)) {
+            return `Invalid value: ${value}, ${country}`;
+          }
+          return true;
+        }}
         disableDropdown
         disabled={disabled}
         inputClass={cx(theme.input, {
