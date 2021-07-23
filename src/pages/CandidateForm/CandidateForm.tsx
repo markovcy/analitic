@@ -127,7 +127,9 @@ const returnOptionsForSelectsUrl = '/main/returnOptionsForSelects';
 export const CandidateForm = memo(() => {
   const form = useGetState<'form'>('form');
   const user = useGetState<'user'>('user');
+  const url = useGetState<'url'>('url');
   const formActions = useGetAction<'form'>('form');
+  const urlActions = useGetAction<'url'>('url');
   const toggleMenu = useGetAction<'toggleMenu'>('toggleMenu');
 
   const location = useLocation();
@@ -223,11 +225,21 @@ export const CandidateForm = memo(() => {
   }, [formActions, onGetForm]);
 
   const aliasCandidate = useMemo(() => {
+    console.log('url');
+    console.log(url);
+    if (url > '' && location.pathname.startsWith(url)) {
+      console.log('url not changed');
+      return url;
+    }
+
     const macthes =
       location.pathname.startsWith(SUFFIX_PATHNAME) &&
       location.pathname.match(/\/([^/]+)\/?$/);
 
     if (macthes && macthes?.length === 2) {
+      urlActions.init({
+        pathname: location.pathname,
+      });
       return macthes[0];
     }
 
@@ -240,10 +252,10 @@ export const CandidateForm = memo(() => {
   }, [location.pathname]);
 
   const onGetCandidate = useCallback(async () => {
-    formActions.update({
-      key: 'candidate',
-      values: undefined,
-    });
+    // formActions.update({
+    //   key: 'candidate',
+    //   values: undefined,
+    // });
 
     if (!aliasCandidate) {
       return;
@@ -378,7 +390,9 @@ export const CandidateForm = memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (formAxios.error) {
+  if (formAxios.response && formAxios.response.status === 400) {
+    console.log(formAxios.response);
+  } else if (formAxios.error) {
     return (
       <PlaceholderError
         title="Get form"

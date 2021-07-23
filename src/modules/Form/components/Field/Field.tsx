@@ -42,12 +42,14 @@ export const Field = themr((props: FieldProps) => {
   );
 
   const defaultValue = useMemo(() => {
-    if (selector && !disabled) {
+    if (selector && !disabled && value === undefined) {
       if (name.endsWith('[]') && type === FormFields.types.TypeField.Select) {
         const dom = document.querySelectorAll<HTMLInputElement>(selector);
-        return [...dom].map((e) =>
-          (e?.value || e?.src || e?.innerHTML)?.trim()
-        );
+        if (dom !== null && dom.length > 0) {
+          return [...dom].map((e) =>
+            (e?.value || e?.src || e?.innerHTML)?.trim()
+          );
+        }
       }
 
       if (selector === GET_PATH_BY_SELECTOR) {
@@ -55,7 +57,11 @@ export const Field = themr((props: FieldProps) => {
       }
 
       const dom = document.querySelector<HTMLInputElement>(selector);
-      return (dom?.value || dom?.src || dom?.innerHTML)?.trim();
+      if (dom !== null) {
+        return (dom?.value || dom?.src || dom?.innerHTML)?.trim();
+      }
+    } else if (selector) {
+      console.log(name, value, selector);
     }
 
     return undefined;
@@ -64,6 +70,7 @@ export const Field = themr((props: FieldProps) => {
 
   const Component = useMemo(() => {
     switch (type) {
+      case FormFields.types.TypeField.File:
       case FormFields.types.TypeField.Attachment:
         return FormFields.Attachment;
 
@@ -90,7 +97,7 @@ export const Field = themr((props: FieldProps) => {
 
       default:
         // eslint-disable-next-line no-console
-        console.error(`This type is not supported [${name}:${type}]`);
+        console.error(`Type [${type}] is not supported (field ${name})`);
         return null;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -100,6 +107,7 @@ export const Field = themr((props: FieldProps) => {
     return null;
   }
 
+  console.log(`rerender Field ${name}= ${value}`);
   return (
     <li className={cx(theme.field, { [theme.hidden]: isHidden })}>
       <ErrorBoundary>

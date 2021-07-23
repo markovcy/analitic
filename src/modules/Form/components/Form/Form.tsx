@@ -39,6 +39,20 @@ export const Form = themr((props: FormProps) => {
 
   const form = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<Record<string, string | null>>({});
+  const useFocus = () => {
+    const htmlElRef = useRef(null);
+    const setFocus = () => {
+      if (htmlElRef.current != null) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore: Object is possibly 'null'.
+        htmlElRef.current.focus();
+      }
+    };
+
+    return [htmlElRef, setFocus];
+  };
+
+  const [inputRef, setInputFocus] = useFocus();
 
   const handleSubmit = useCallback(
     (e?: React.SyntheticEvent<HTMLFormElement>) => {
@@ -158,10 +172,16 @@ export const Form = themr((props: FormProps) => {
     []
   );
 
-  const hasError = useMemo(
-    () => Object.values(errors).filter(Boolean).length !== 0,
-    [errors]
-  );
+  const hasError = useMemo(() => {
+    //
+    if (Object.values(errors).filter(Boolean).length > 0) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      setInputFocus();
+      return true;
+    }
+    return false;
+  }, [errors]);
 
   return (
     <form
@@ -182,6 +202,7 @@ export const Form = themr((props: FormProps) => {
             {...f}
             disabled={loading || f.disabled || f.readOnly}
             error={errors[f.name] || formErrors?.[f.name]}
+            ref={errors[f.name] || formErrors?.[f.name] ? inputRef : null}
             onChange={onChangeField}
           />
         ))}

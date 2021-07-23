@@ -3,6 +3,7 @@ import { IconsType } from '@upp/chrome/components';
 export enum TypeField {
   Tel = 'tel',
   Date = 'date', // need to realization
+  File = 'file',
   Text = 'text',
   Email = 'email',
   Hidden = 'hidden',
@@ -38,6 +39,7 @@ export type BaseField<T> = BaseTitle & BaseInput<T>;
 
 export type Tel = BaseField<TypeField.Tel>;
 export type Hidden = BaseInput<TypeField.Hidden>;
+export type File = BaseField<TypeField.File>;
 export type Attachment = BaseField<TypeField.Attachment>;
 export type TextArea = BaseField<TypeField.Textarea> & BaseText;
 
@@ -74,6 +76,7 @@ export type Select = Omit<BaseField<TypeField.Select>, 'value'> & {
 export type Field = (
   | Tel
   | Hidden
+  | File
   | Attachment
   | TextArea
   | DefaultField

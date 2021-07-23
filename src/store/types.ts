@@ -19,6 +19,7 @@ export type State = {
   router: RouterState;
   burgerMenu: BurgerMenu;
   user: types.User | null;
+  url: string;
   form: FormState;
 };
 

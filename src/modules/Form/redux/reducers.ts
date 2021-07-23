@@ -2,6 +2,7 @@ import { storage } from '@upp/chrome/utils';
 import { Candidate } from '@upp/chrome/types';
 import { FormFields } from '@upp/chrome/molecules';
 
+import { types } from '@upp/chrome/store';
 import * as actions from './actions';
 
 interface Form {
@@ -80,6 +81,25 @@ export const form = (
     }
 
     default:
+      return state;
+  }
+};
+
+export const url = (
+  state: types.State['url'] = '',
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { type, payload }: any // types.BaseAction<types.State['url']>
+) => {
+  switch (type) {
+    case actions.URL.INIT:
+      state = payload.pathname;
+      console.log('state');
+      console.log(state);
+      return state;
+
+    default:
+      console.log(type);
+      console.log(payload);
       return state;
   }
 };

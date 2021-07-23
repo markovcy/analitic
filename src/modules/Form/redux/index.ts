@@ -5,6 +5,10 @@ export const formActions = {
   form: actions.form,
 };
 
+export const urlActions = {
+  url: actions.url,
+};
+
 export const formConstants = {
   FORM: actions.FORM,
 };
