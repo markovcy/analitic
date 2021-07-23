@@ -42,7 +42,7 @@ export const Form = themr((props: FormProps) => {
   const useFocus = () => {
     const htmlElRef = useRef(null);
     const setFocus = () => {
-      if (htmlElRef.current != null) {
+      if (htmlElRef && htmlElRef.current != null) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore: Object is possibly 'null'.
         htmlElRef.current.focus();
