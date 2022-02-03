@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Table</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form method="POST" id="form">
+        <div>
+            <label>Дата: 
+                <input type="date" id="date" name="date">
+            </label>
+        </div>
+        <p> 
+            <button type="submit">Отправить</button>
+        </p>
+        <div class="content"></div>
+        <div class="content1"></div>
+        <!-- <div class="table">
+            <div class="caption">Назва</div>
+                <div class="thead">
+                    <div class="cell">Заголовок1</div>
+                    <div class="cell">Заголовок1</div>
+                </div>
+                <div class="tbody">
+                    <div class="row">
+                        <div class="cell">Данные1</div>
+                        <div class="cell">Данные2</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">Данные3</div>
+                        <div class="cell">Данные4</div>
+                    </div>
+                </div>
+                <div class="tfoot">
+                    <div class="row">
+                        <div class="cell">футер1</div>
+                        <div class="cell">футер2</div>
+                    </div>
+                </div>
+            
+        </div> -->
+        <div class="content2"></div>
+    </form>
+    <!-- <script>
+        let date = document.getElementById("date");
+        let now;
+        now = new Date(2021, 0, 1);
+        let date1 = (new Date()).toISOString().split('T')[0];
+        // let date = (new Date()).toISOString().split('T')[0];
+            // let now1 = now.slice(0,4);
+        console.log(now);
+        console.log(date1);
+        console.log(date);
+
+    // alert(date1);
+    console.log(date1);
+    console.log(date);
+    function isValidDate() {
+    if(date < date1) {
+            alert(OK);
+            return true; // all three pieces match exactly
+        }
+    alert(notOK);
+    return false; // did not meet criteria for return true
+}
+    </script> -->
+    <script src="src.js"></script>
+    <script src="parse.js"></script>
+</body>
+</html>

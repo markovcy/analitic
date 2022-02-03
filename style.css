@@ -1,0 +1,42 @@
+table {
+  border-collapse: collapse;
+}
+
+.table {
+    display: table;
+    border-collapse: collapse;
+}
+
+.caption {
+  display: table-caption;
+}
+
+.thead {
+  display: table-header-group;
+}
+
+.tbody {
+  display: table-row-group;
+}
+
+.tfoot {
+  display: table-footer-group;
+}
+
+table td {
+  border: 1px solid black;
+}
+
+.row {
+  display: table-row;
+}
+
+.cell {
+  border: 1px solid black;
+  display: table-cell;
+}
+
+.tableBody {
+  overflow: scroll;
+  /* max-width: 70%; */
+}
